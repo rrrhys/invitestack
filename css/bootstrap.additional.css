@@ -1,6 +1,6 @@
 body {
 	padding-top: 60px;
-}
+	}
 tr.Unfinished > td {
 	background-color: #FF988D !important;
 }
@@ -13,4 +13,31 @@ tr.Unfinished > td {
 	border: 1px solid #000;
 	background-color: #000;
 	border-radius: 3px;
+}
+.invitation {
+	border: 1px solid #eee;
+	overflow: hidden;
+	position: relative;
+}
+.invitation .horizontal {
+	width: 3in;
+	height: 2in;
+}
+.invitation.portrait {
+	width: 2in;
+	height: 3in;
+}
+.full_size .horizontal{
+	width: 600px !important;
+	height: 400px !important;
+}
+.full_size .portrait {
+	width: 400px !important;
+	height: 600px !important;
+}
+.hidden {
+  display: none;
+}
+.no_padding {
+	padding: 0px !important;
 }

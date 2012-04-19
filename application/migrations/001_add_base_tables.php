@@ -12,11 +12,13 @@ class Migration_Add_base_tables extends CI_Migration {
 			'name'=>array('type'=>'VARCHAR',
 			'constraint'=>'100'),
 			'owner_id'=>array('type'=>'INT',
-			'constraint'=>5)));
+			'constraint'=>5),
+			'invitation_html'=>array('type'=>'VARCHAR',
+			'constraint'=>2000)));
 		$this->dbforge->add_key('id', TRUE);
-		$this->dbforge->create_table('customers');
+		$this->dbforge->create_table('invitations');
 	}
 	public function down(){
-		$this->dbforge->drop_table('customers');
+		$this->dbforge->drop_table('invitations');
 	}
 }

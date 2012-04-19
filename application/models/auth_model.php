@@ -55,10 +55,12 @@ class Auth_model extends CI_Model
 		
 		if($q)
 		{
+		$grav_hash = md5(strtolower(trim($q['email_address'])));
 		$this->session->set_userdata(array(
 		'email_address'=>$q['email_address'],
 		'id'=>$q['id'],
-		'auth_level'=>$q['auth_level']));
+		'auth_level'=>$q['auth_level'],
+		'gravatar_url'=>"http://www.gravatar.com/avatar/".$grav_hash));
 		return true;
 		
 		}

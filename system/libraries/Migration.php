@@ -141,6 +141,7 @@ class CI_Migration {
 				// If trying to migrate down but we're missing a step,
 				// something must definitely be wrong.
 				$this->_error_string = sprintf($this->lang->line('migration_not_found'), $i);
+				log_message('debug', 'Migration not found.');
 				return FALSE;
 			}
 
@@ -182,6 +183,7 @@ class CI_Migration {
 				return FALSE;
 			}
 		}
+		
 
 		log_message('debug', 'Current migration: ' . $current_version);
 
@@ -199,7 +201,10 @@ class CI_Migration {
 		foreach ($migrations AS $migration)
 		{
 			// Run the migration class
+
 			$class = 'Migration_' . ucfirst(strtolower($migration));
+			log_message('debug', "Attempting to run $class");
+
 			call_user_func(array(new $class, $method));
 
 			$current_version += $step;
@@ -221,6 +226,7 @@ class CI_Migration {
 	 */
 	public function latest()
 	{
+		//log_message('debug', $this->_error_string);
 		if ( ! $migrations = $this->find_migrations())
 		{
 			$this->_error_string = $this->line->lang('migration_none_found');

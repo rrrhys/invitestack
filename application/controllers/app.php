@@ -20,109 +20,195 @@ class App extends MY_Controller {
 
      function __construct(){
 	 	parent::__construct();
-	 	$this->load->model('timeclock_model','timeclock');
-	 	if(!$this->session->userdata('id')){
-	 		redirect("/auth/login");
-	 	}
+	 	$this->load->model('invitation_model','invitations');
+	 	
 	 }
+
 	public function index()
 	{
 		if($this->session->userdata('id')){
 		redirect("/app/dashboard");
 		}else{
-		redirect("/auth/login");
+		redirect("/app/browse_invitations");
 		}
-
-		$page_data = $this->page_data_base;
-		$this->output('welcome_message',$page_data);
+	}
+	public function browse_invitations(){
+		$page_data = $this->page_data_base();
+			$page_data['page_title'] = "Browse Invitations";
+			$page_data['page_heading'] = "Browse Invitations";
+			$page_data['invitations'] = $this->invitations->list_invitations_merged();
+		$this->output('app/browse_invitations',$page_data);			
 	}
 	public function dashboard(){
-
+		$this->_redirect_if_not_logged_in();
 		$page_data = $this->page_data_base();
 			$page_data['page_title'] = "Dashboard";
 			$page_data['page_heading'] = "Dashboard";
-			$page_data['times_entered'] = $this->timeclock->list_jobs($this->session->userdata('id'));
-			$page_data['current_job'] = $this->timeclock->get_current_job($this->session->userdata('id'));
+			$page_data['invitations'] = $this->invitations->list_invitations($this->session->userdata('id'));
 		$this->output('app/dashboard',$page_data);		
 	}
-	public function finish_job($job_id){
-		if(!$this->input->post("submitted")){
-			$page_data = $this->page_data_base();
-			$page_data['page_title'] = "Finish job";
-			$page_data['page_heading'] = "Finish Job";
-			$page_data['job'] = $this->timeclock->get_job($job_id,$this->session->userdata('id'));
-			$this->output('app/finish_job',$page_data);	
+
+	public function get_personalised_id($base_id){
+
+		echo $this->invitations->get_personalised_id($base_id);
+	}
+	public function edit_personalised_invitation($invitation_id){
+		$invitation = $this->invitations->get_personalised_invitation($invitation_id);
+		$page_data = $this->page_data_base();
+		$page_data['page_title'] = "Personalise invitation";
+		$page_data['page_heading'] = "Personalise Invitation";
+
+	}
+	public function facebook_connect($invitation_id){
+	
+		//send user off to connect with facebook.
+		if($this->facebook->getUser()){
+			redirect("/app/start_invitation_from/$invitation_id");
+
 		}else{
-			$job = array();
-			$job['finished?'] = true;
-			$job['work_comments'] = $this->input->post('work_comments');
-			$job['work_description'] = $this->input->post('work_description');
-			if($this->timeclock->update_job($job_id,
-											$job,$this->session->userdata('id'))){
-				$this->session->set_flashdata('good','Job Marked as complete.');
-				redirect("/app/dashboard");
-			}
-			else{
-				$this->session->set_flashdata('bad',implode("<br />",$this->timeclock->errors));
-				redirect("/app/finish_job/$job_id");
-			}
+		echo "You need to login to facebook";
+		echo "<a href='".$this->facebook->getLoginUrl()."'>OK</a>";
+	}
+	}
+	public function start_invitation_from($invitation_id){
+
+		if(!$this->session->userdata('id')){
+			//is user logged in with facebook?
+		}
+		if($this->session->userdata('id') || $this->facebook->getUser()){
+			$owner_id = $this->session->userdata('id') ? $this->session->userdata('id') : $this->facebook->getUser();
+			$new_id = $this->invitations->start_invitation_from($invitation_id,$owner_id);
+
+			redirect("/app/personalise_invitation/$new_id");
+		}
+		else{
+			redirect("/app/facebook_connect/$new_id");
 		}
 	}
-	public function view_job($job_id){
+	public function view_invitation($invitation_id){
 			$page_data = $this->page_data_base();
-			$page_data['page_title'] = "View job";
-			$page_data['page_heading'] = "View Job";
-			$page_data['edit_disabled'] = true;
-			$page_data['job'] = $this->timeclock->get_job($job_id,$this->session->userdata('id'));
-			$this->output('app/view_job',$page_data);			
+			$page_data['page_title'] = "View invitation";
+			$page_data['page_heading'] = "View Invitation";
+			if(!$this->invitations->user_owns_invitation($this->session->userdata('id'),$invitation_id)){
+				$page_data['edit_disabled'] = true;
+			}else{
+				$page_data['edit_disabled'] = false;
+			}
+			
+			$page_data['invitation'] = $this->invitations->get_invitation($invitation_id);
+			$this->output('app/view_invitation',$page_data);			
 	}
-	public function edit_job($job_id){
+	public function personalise_invitation($p_id){
+			$page_data = $this->page_data_base();
+			$page_data['page_title'] = "Personalise invitation";
+			$page_data['page_heading'] = "Personalise Invitation";
+			/*if(!$this->invitations->user_owns_invitation($this->session->userdata('id'),$invitation_id)){
+				$page_data['edit_disabled'] = true;
+			}else{
+				$page_data['edit_disabled'] = false;
+			}*/
+			
+			$page_data['invitation'] = $this->invitations->get_personalised_invitation($p_id);
+			$this->output('app/personalise_invitation',$page_data);			
+	}
+	public function finished_invitation($p_id,$name){
+			$page_data = $this->page_data_base();
+			$page_data['page_title'] = "Personalise invitation";
+			$page_data['page_heading'] = "Personalise Invitation";
+		$page_data['invitation'] = $this->invitations->get_personalised_invitation($p_id);
+		//overwrite the name field with that supplied.
+		foreach($page_data['invitation']['fields'] as &$f){
+			if($f['field_name'] == "name"){
+				$f['value'] = $name;
+			}
+		}
+		
+		//echo json_encode($page_data);
+		$this->output('app/finished_invitation',$page_data,'scripts_and_content');
+	}
+	public function save_personalised_invitation($id){
+		$invitation = array();
+		$invitation['invitation_html'] = $this->input->post('invitation_html');
+		$invitation['fields']= array();
+			foreach($_POST as $k=>$v){
+				if(substr($k, 0,12) == "input_merge_"){
+					$k = substr($k,12);
+					$invitation['fields'][$k] = array(
+													'value' => $v,
+													'type'=>"merge");
+				}
+				if(substr($k, 0,15) == "input_template_"){
+					$k = substr($k,15);
+					$invitation['fields'][$k] = array(
+													'value' => $v,
+													'type'=>"template");
+				}
+			}
+		$this->invitations->update_personalised_invitation($id,$invitation);
+
+		redirect("/app/personalise_invitation/$id");
+		
+	}
+	public function edit_invitation($invitation_id){
+		$this->_redirect_if_not_logged_in();
 		if(!$this->input->post("submitted")){
 			$page_data = $this->page_data_base();
-			$page_data['page_title'] = "Edit job";
-			$page_data['page_heading'] = "Edit Job";
+			$page_data['page_title'] = "Edit invitation";
+			$page_data['page_heading'] = "Edit Invitation";
 			$page_data['edit_disabled'] = false;
-			$page_data['job'] = $this->timeclock->get_job($job_id,$this->session->userdata('id'));
-			$this->output('app/view_job',$page_data);
+			$page_data['invitation'] = $this->invitations->get_invitation($invitation_id);
+			$this->output('app/edit_invitation',$page_data);
 			}else{
-			$job = array();
-			$job['finished?'] = false;
-			$job['work_comments'] = $this->input->post('work_comments');
-			$job['work_description'] = $this->input->post('work_description');
-				if($this->timeclock->update_job($job_id,$job,$this->session->userdata('id'))){
-						$this->session->set_flashdata('good','Job edited successfully.');
+			$invitation = array();
+			$invitation['name'] = $this->input->post('name');
+			$invitation['invitation_html'] = $this->input->post('invitation_html');
+			$invitation['fields']= array();
+			foreach($_POST as $k=>$v){
+				if(substr($k, 0,12) == "input_merge_"){
+					$k = substr($k,12);
+					$invitation['fields'][$k] = array(
+													'value' => $v,
+													'type'=>"merge");
+				}
+				if(substr($k, 0,15) == "input_template_"){
+					$k = substr($k,15);
+					$invitation['fields'][$k] = array(
+													'value' => $v,
+													'type'=>"template");
+				}
+			}
+
+				if(!$this->invitations->user_owns_invitation($this->session->userdata('id'),$invitation_id)){
+						$this->session->set_flashdata('bad',"User cannot edit that invitation.");
+						redirect("app/dashboard");	
+				}else if ($this->invitations->update_invitation($invitation_id,$invitation)){
+						$this->session->set_flashdata('good','Invitation edited successfully.');
 						redirect("/app/dashboard");					
 				}
 				else{
 						$this->session->set_flashdata('bad',implode("<br />", $this->timeclock->errors));
-						redirect("app/edit_job/" . $job_id);					
+						redirect("app/edit_invitation/" . $job_id);					
 				}
 			}	
 	}
-	public function new_job(){
+	public function new_invitation(){
+		$this->_redirect_if_not_logged_in();
 		if(!$this->input->post("submitted")){
 			$page_data = $this->page_data_base();
-			$page_data['page_title'] = "Add a new job";
-			$page_data['page_heading'] = "New Job";
-			$page_data['customers'] = $this->timeclock->get_customers($this->session->userdata('id'));
-			$current_job = $this->timeclock->get_current_job($this->session->userdata('id'));
-			if($current_job){
-			$page_data['warning_flash'] = "You are currently working on another job. If you start a new job, that one will automatically be marked as finished. <a href='/app/view_job/{$current_job['id']}'> <br /><i class='icon-chevron-right'></i> Go to Active Job</a>";
-			}
-			$this->output('app/new_job',$page_data);		
+			$page_data['page_title'] = "Add a new invitation";
+			$page_data['page_heading'] = "New Invitation";
+			
+			$this->output('app/new_invitation',$page_data);		
 		}else{
-			if($this->timeclock->start_job($this->input->post("customer_name"),
-					$this->input->post("work_type"),
-					$this->input->post("job_number"),
-					$this->input->post("work_description"),
-					$this->input->post("work_comments"),
-					$this->session->userdata('id'))){
-						$this->session->set_flashdata('good','New Job added.');
+			if($this->invitations->add_invitation($this->session->userdata('id'),
+			array('name'=>$this->input->post("name"),
+					'invitation_html'=>$this->input->post("invitation_html")))){
+						$this->session->set_flashdata('good','New Invitation added.');
 						redirect("/app/dashboard");
 					}
 					else{
-						$this->session->set_flashdata('bad',implode("<br />", $this->timeclock->errors));
-						redirect("app/new_job");
+						$this->session->set_flashdata('bad',implode("<br />", $this->invitations->errors));
+						redirect("app/new_invitation");
 					}
 		}
 	}
