@@ -99,7 +99,7 @@ app.merge_preview = function (){
 			var new_field_template = $(".field_template").clone();
 			var wrapper = new_field_template.children(".control-group");
 			wrapper.attr('id',field);
-			alert(field);
+			//alert(field);
 			wrapper.addClass('merge_field_input');
 			var new_label  =wrapper.children("label");
 			new_label.attr('for',field);
