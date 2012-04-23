@@ -14,12 +14,16 @@ tr.Unfinished > td {
 	background-color: #000;
 	border-radius: 3px;
 }
+.browse_invitation_shell {
+	float: left;
+	padding: 20px;
+}
 .invitation {
 	border: 1px solid #eee;
 	overflow: hidden;
 	position: relative;
 }
-.invitation .horizontal {
+.invitation.horizontal {
 	width: 3in;
 	height: 2in;
 }
@@ -27,14 +31,23 @@ tr.Unfinished > td {
 	width: 2in;
 	height: 3in;
 }
-.full_size .horizontal{
+.mid-size{
+	zoom: 2;
+	line-height:100%;
+}
+.full_size{
+	zoom: 8.34; /*multiply by 2 because we show half size, then by 4.17 to 72dpi to 300 dpi*/
+	line-height:100%;
+}
+
+/*.horizontal{
 	width: 600px !important;
 	height: 400px !important;
 }
-.full_size .portrait {
+.full_size.portrait {
 	width: 400px !important;
 	height: 600px !important;
-}
+}*/
 .hidden {
   display: none;
 }

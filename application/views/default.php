@@ -14,11 +14,10 @@
 				<?if($auth_level > 1){?>
 				<li><a href="/app/profile"><img src="<?=$avatar?>" style="height:20px;width:20px;" /> 
 					<?=$this->session->userdata('email_address')?></a></li>
-					<li><a href="/app/dashboard">Dashboard</a></li>
+					
 					<li><a href="/auth/logout">Logout</a></li>
 				<?}?>
-				<?if($auth_level){?>
-					<li><a href="/app/my_invitations">My Invitations</a></li><?}?>
+				<li><a href="/app/my_invitations">Dashboard</a></li>
 				<?if(!$auth_level){?>
 					<li><a href="/auth/login">Login</a></li>
 					<li><a href="/auth/register">Register</a></li>

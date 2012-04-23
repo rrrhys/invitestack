@@ -1,4 +1,4 @@
-<div class="span6 offset3">
+
 <?
 $disabled_field = "";
 if($edit_disabled == true){
@@ -18,9 +18,11 @@ if($edit_disabled == true){
 
 </script>
 <?//=json_encode($invitation['fields'])?>
-<input type="text" name="field_defaults" id="field_defaults" />
-<input type="text" class="merge_field_input" id="test">
+<div class="span5">
+<!--input type="text" name="field_defaults" id="field_defaults" /-->
 <div class="invitation <?=$invitation['orientation']?>"><?=$invitation['invitation_html']?></div>
+</div>
+<div class="span5">
 	<input type="hidden" name="submitted" value="yes">
 	<div class="control-group">
 		<label for="name" class="control-label">Name</label>

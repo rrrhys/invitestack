@@ -39,12 +39,13 @@ class App extends MY_Controller {
 			$page_data['invitations'] = $this->invitations->list_invitations_merged();
 		$this->output('app/browse_invitations',$page_data);			
 	}
-	public function dashboard(){
+	public function my_invitations(){
 		$this->_redirect_if_not_logged_in();
 		$page_data = $this->page_data_base();
 			$page_data['page_title'] = "Dashboard";
 			$page_data['page_heading'] = "Dashboard";
 			$page_data['invitations'] = $this->invitations->list_invitations($this->session->userdata('id'));
+			$page_data['my_invitations'] = $this->invitations->list_my_invitations($this->session->userdata('id'));
 		$this->output('app/dashboard',$page_data);		
 	}
 
@@ -57,7 +58,12 @@ class App extends MY_Controller {
 		$page_data = $this->page_data_base();
 		$page_data['page_title'] = "Personalise invitation";
 		$page_data['page_heading'] = "Personalise Invitation";
-
+	}
+	public function add_name($invitation_id,$name){
+		echo $this->invitations->add_name(urldecode($name),$invitation_id,$this->session->userdata('id'));
+	}
+	public function delete_name($id,$invitation_id){
+		return $this->invitations->delete_name($id,$invitation_id,$this->session->userdata('id'));	
 	}
 	public function facebook_connect($invitation_id){
 	
@@ -96,9 +102,16 @@ class App extends MY_Controller {
 			}
 			
 			$page_data['invitation'] = $this->invitations->get_invitation($invitation_id);
+			if(!$page_data['invitation']){
+				$this->_invalid_page();
+			}
 			$this->output('app/view_invitation',$page_data);			
 	}
 	public function personalise_invitation($p_id){
+			$invitation = $this->invitations->get_personalised_invitation($p_id);
+			if(!$invitation){
+				$this->_invalid_page();
+			}
 			$page_data = $this->page_data_base();
 			$page_data['page_title'] = "Personalise invitation";
 			$page_data['page_heading'] = "Personalise Invitation";
@@ -108,23 +121,55 @@ class App extends MY_Controller {
 				$page_data['edit_disabled'] = false;
 			}*/
 			
-			$page_data['invitation'] = $this->invitations->get_personalised_invitation($p_id);
+			$page_data['invitation'] = $invitation;
+
 			$this->output('app/personalise_invitation',$page_data);			
 	}
-	public function finished_invitation($p_id,$name){
+	public function finished_invitation($p_id,$name,$format="html"){
 			$page_data = $this->page_data_base();
 			$page_data['page_title'] = "Personalise invitation";
 			$page_data['page_heading'] = "Personalise Invitation";
 		$page_data['invitation'] = $this->invitations->get_personalised_invitation($p_id);
+		if(!$page_data['invitation']){
+			$this->_invalid_page();
+		}
 		//overwrite the name field with that supplied.
 		foreach($page_data['invitation']['fields'] as &$f){
 			if($f['field_name'] == "name"){
-				$f['value'] = $name;
+				$f['value'] = urldecode($name);
 			}
 		}
 		
 		//echo json_encode($page_data);
+		if($format == "html"){
 		$this->output('app/finished_invitation',$page_data,'scripts_and_content');
+		}
+		else{
+			//echo "JPG:";
+			//exec($command . ' 2>&1',$output);
+
+			//set POST variables
+			$url = "http://www.screenshotter.dev";
+			$fields = array(
+									'page_to_download'=>urlencode("http://www.invites.dev/app/finished_invitation/$p_id/$name/html"));
+			$fields_string = "";
+			//url-ify the data for the POST
+			foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.''; }
+			//rtrim($fields_string,'&');
+			//echo $fields_string;
+			//die();
+			//open connection
+
+
+			exec('~/phantomjs /Users/rrrhys/projects/invites_ci/test.js http://www.invites.dev/app/finished_invitation/' . $p_id . '/' . $name . ' "#invitation_preview_merged" "'.$p_id.'_'.$name.'.jpg" 2>&1',$result);
+			$result = implode("\r\n", $result);
+			$result_obj = json_decode($result);
+			//echo $result_obj->filename;
+
+			$this->output->set_content_type('jpeg');
+    		$this->output->set_output(file_get_contents('invitations/'.$result_obj->filename));
+			//echo "OK";
+		}
 	}
 	public function save_personalised_invitation($id){
 		$invitation = array();

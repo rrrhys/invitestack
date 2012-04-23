@@ -1,4 +1,5 @@
-<div class="span6 offset3">
+<div class="span5"><div class="invitation <?=$invitation['orientation']?>" id="invitation_preview_merged"><?=$invitation['invitation_html']?></div></div>
+<div class="span5">
 <script type="text/javascript">
 	$(function(){
 		app.merge_preview();
@@ -28,7 +29,7 @@
 <input type="text" class="merge_field_input" id="test">
 <div class="invitation hidden" id="invitation_preview_base"><?=$invitation['invitation_html']?></div>
 
-<div class="invitation" id="invitation_preview_merged"><?=$invitation['invitation_html']?></div>
+
 
 	<input type="hidden" name="submitted" value="yes">
 	<div class="control-group hidden">
@@ -45,13 +46,17 @@
 		<?foreach($invitation['fields'] as $f){?>
 			
 			<div class="control-group merge_field_input" id="<?="{$f['field_type']}_".$f['field_name']?>">
-				<label for="<?="input_{$f['field_type']}_{$f['field_name']}"?>"><?="input_{$f['field_type']}_{$f['field_name']}"?></label>
+				<label class="control-label" for="<?="input_{$f['field_type']}_{$f['field_name']}"?>"><?="input_{$f['field_type']}_{$f['field_name']}"?></label>
 				<div class="controls"><input type="text" name="<?="input_{$f['field_type']}_{$f['field_name']}"?>" id="<?="input_{$f['field_type']}_{$f['field_name']}"?>" class="input input-xlarge user_template_input" value="<?=$f['value']?>" />
 				<?if($f['field_name'] == "name"){
 					?>
 					<span id="add_name" class="btn">Add Name</span>
 					<table class="table table-striped" id="names_table">
-						
+						<?foreach($invitation['names'] as $n){?>
+	<?$preview_jpg = "<a href='/app/finished_invitation/{$invitation['id']}/{$n['person_name']}/jpg/'>(P:J)</a>";
+	$preview_html = "<a href='/app/finished_invitation/{$invitation['id']}/{$n['person_name']}/html/'>(P:H)</a>";
+	?><tr class='name_element' id='<?=$n['id']?>'><td><?=$n['person_name']?></td><td><?=$preview_html?> <?=$preview_jpg?> <a class='remove close' id='remove_<?=$n['id']?>'>x</a></td></tr>
+						<?}?>
 					</table>
 					<?
 				}?>
@@ -64,7 +69,7 @@
 	<div class="hidden">
 		<div class="field_template">
 			<div class="control-group">
-				<label for=""></label>
+				<label class="control-label" for=""></label>
 				<div class="controls"><input type="text" name="" id="" class="input-xlarge user_template_input" /></div>
 			</div>
 		</div>

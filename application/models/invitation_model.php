@@ -19,6 +19,27 @@ class Invitation_model extends CI_Model
     	$q = $this->db->get('invitations')->result_array();
     	return $q;
     }
+    public function delete_name($name_id,$invitation_id,$owner_id){
+      $this->db->where('id',$name_id);
+      //$this->db->where('owner_id',$owner_id);
+      $this->db->where('customer_invitation_id',$invitation_id);
+      $this->db->delete('customer_invitation_names');
+      return true;
+    }
+    public function add_name($name,$invitation_id,$owner_id){
+      //check the user owns this invite.
+      $this->db->where('id',$invitation_id);
+      $this->db->where('owner_id',$owner_id);
+      $invitation = $this->db->get('customer_invitations');
+      if($invitation){
+        $insert = array('customer_invitation_id'=>$invitation_id,'person_name'=>$name);
+        $this->db->insert('customer_invitation_names',$insert);
+        return $this->db->insert_id();
+        
+      }else{
+        return false;
+      }
+    }
     public function list_invitations_merged($owner_id=false){
       if($owner_id){
        $this->db->where('owner_id',$owner_id);
@@ -32,12 +53,19 @@ class Invitation_model extends CI_Model
           //echo $find_string;
          $inv['invitation_html'] = str_replace($find_string, $f['value'], $inv['invitation_html']);
         }
+
       }
-      //echo "<pre>";
-      //echo json_encode($q);
-      //die();
       return $q;
     }
+    public function list_my_invitations($owner_id){
+              if($owner_id){
+               $this->db->where('owner_id',$owner_id);
+              }
+              $q = $this->db->get('customer_invitations')->result_array();
+              return $q;
+    }
+
+
     public function user_owns_invitation($owner_id,$invitation_id){
       $this->db->where('owner_id',$owner_id);
       $this->db->where('id',$invitation_id);
@@ -79,11 +107,13 @@ class Invitation_model extends CI_Model
       if($q){
         $this->db->where('invitation_id',$p_id);
         $q['fields'] = $this->db->get('customer_invitation_fields')->result_array();
+        $this->db->where('customer_invitation_id',$p_id);
+        $q['names'] = $this->db->get('customer_invitation_names')->result_array();
       }
       return $q;
     }
     public function update_personalised_invitation($p_id,$invitation){
-      echo $p_id;
+      //echo $p_id;
       $updatable_columns = array('name','invitation_html');
 
       $update_array = array();
@@ -106,10 +136,12 @@ class Invitation_model extends CI_Model
                           'field_type'=>$v['type']);
           $this->db->insert('customer_invitation_fields',$insert);
         }
-        foreach($invitation['names'] as $f){
-          $insert = array('customer_invitation_id'=>$p_id,
-                          'person_name'=>$f);
-          $this->db->insert('customer_invitation_names',$insert);
+        if(isset($invitation['names'])){
+          foreach($invitation['names'] as $f){
+            $insert = array('customer_invitation_id'=>$p_id,
+                            'person_name'=>$f);
+            $this->db->insert('customer_invitation_names',$insert);
+          }
         }
       }
       return true;

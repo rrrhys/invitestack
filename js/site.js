@@ -1,14 +1,40 @@
 var app = {};
 app.id = -1;
 app.merge_fields = [];
+var delete_keys = [];
 app.add_name = function(thename){
 	var random_id = Math.round(Math.random() * 1000);
-	$("#names_table").append("<tr class='name_element' id='element" + random_id + "'><td>" + thename + "</td><td><a class='remove close' id='remove_" + random_id + "'>x</a></td></tr>");
+	var id = $("#base_id").val();
+	var preview_jpg = "<a href='/app/finished_invitation/" + id+ "/" + thename + "/jpg/'>(P:J)</a>";
+	var preview_html = "<a href='/app/finished_invitation/" + id + "/" + thename + "/html/'>(P:H)</a>";
+	var row_id = "element" + random_id;
+	$("#names_table").append("<tr class='name_element' id='" + row_id + "'><td>" + thename + "</td><td>" + preview_html + " " + preview_jpg + " <a class='remove close' id='remove_" + random_id + "'>x</a></td></tr>");
+	$.post("/app/add_name/" + id + "/" + thename,{},function(return_value){
+		alert(return_value);
+		delete_keys.push([row_id.substr(7),return_value]);
+	});
+}
+app.delete_name = function(row_id){
+	$("#" + row_id).remove();
+	var delete_id = "";
+	$.each(delete_keys,function(index,row){
+		if(row[0] == row_id){
+			delete_id = row[1];
+		}
+	})
+	if(delete_id == ""){
+		delete_id = row_id;
+	}
+	var id = $("#base_id").val();
+	$.post("/app/delete_name/" + delete_id + "/" + id,{},function(return_value){
+	});
+	//alert(delete_id);
 }
 $(function(){
 	//user has clicked to remove a name row
 	$(".remove").live('click',function(){
 	var id = $(this).attr('id').substr(7);
+	app.delete_name(id);
 	$("#element" + id).remove();
 	return false;
 	});
@@ -57,7 +83,7 @@ app.get_new_id = function(callback){
 	})
 }*/
 app.merge_preview = function (){
-	var debug = false;
+	var debug = true;
 	var invitation_html = $("#invitation_html").val();
 	$(".invitation").html(invitation_html);
 	app.merge_fields = [];

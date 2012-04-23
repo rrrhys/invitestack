@@ -85,7 +85,9 @@ class MY_Controller extends CI_Controller {
 	 	}
 	 	return true;
 	 }
-
+	 public function _invalid_page(){
+	 	redirect("/app");
+	 }
 	 public function _redirect_if_not_logged_in($redirect_url = "/auth/login"){
 	 	if(!$this->session->userdata('id')){
 			$this->session->set_flashdata('bad',"You need to be logged in to do that.");
