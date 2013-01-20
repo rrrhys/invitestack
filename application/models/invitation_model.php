@@ -86,6 +86,7 @@ class Invitation_model extends CI_Model
       $q = $this->db->get('invitations')->row_array();
       unset($q['id']);
       unset($q['owner_id']);
+      unset($q['long_description']);
       $q['owner_id'] = $owner_id;
       $this->db->insert('customer_invitations',$q);
       $new_id = $this->db->insert_id();

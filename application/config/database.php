@@ -51,7 +51,7 @@ $active_record = TRUE;
 if(strstr($_SERVER['SERVER_NAME'], ".dev")){
 $db['default']['hostname'] = '127.0.0.1';
 $db['default']['username'] = 'root';
-$db['default']['password'] = 'insecure_pass';
+$db['default']['password'] = "Must be set in database_password.php";
 $db['default']['database'] = 'invites';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
@@ -67,7 +67,7 @@ $db['default']['stricton'] = FALSE;
 }else{
 	$db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'rrrhysco_invites';
-$db['default']['password'] = 'W4EprabePraWaC7s';
+$db['default']['password'] = "Must be set in database_password.php";
 $db['default']['database'] = 'rrrhysco_invitestack_v2';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
@@ -81,6 +81,13 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 }
-
+require_once("database_password.php");
+if($db['default']['password'] == "Must be set in database_password.php"){
+echo "DB CONFIG NOT FINISHED - create database_password.php file in application/config";
+echo "<br />";
+echo "Should have one line of config: ";
+echo '$db[\'default\'][\'password\'] = \'insecure_pass\';';
+die();
+}
 /* End of file database.php */
 /* Location: ./application/config/database.php */

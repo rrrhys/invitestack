@@ -15,6 +15,14 @@
 	<?=form_open("/app/new_invitation/",array('class'=>'form-horizontal'))?>
 	<input type="hidden" name="submitted" value="yes">
 	<div class="control-group">
+		<label for="orientation" class="control-label">Orientation</label>
+		<div class="controls">
+			<select name="orientation" id="orientation" class="input-xlarge">
+				<option value="landscape">Landscape</option>
+				<option value="portrait">Portrait</option>
+			</select></div>
+	</div>
+	<div class="control-group">
 		<label for="name" class="control-label">Name</label>
 		<div class="controls"><input type="text" name="name" id="name" class="input-xlarge"></div>
 	</div>

@@ -1,4 +1,4 @@
-<div class="span6 offset3">
+<div class="span8 offset2">
 <script type="text/javascript">
 	$(function(){
 		app.merge_preview();
@@ -7,15 +7,30 @@
 </script>
 <input type="hidden" name="base_id" id="base_id" value="<?=$invitation['id']?>" />
 <input type="text" class="merge_field_input" id="test">
+<div class="view_invitation">
+	<div class="span9">
+	<div class="row-fluid">
+			<div class="span5">
+		
+				<div class="invitation <?=$invitation['orientation']?>" id="invitation_preview_merged"><?=$invitation['invitation_html']?></div>
+			</div>
+	<div class="span4">
+		<h3>About:</h3>
+		<p><?=$invitation['long_description'];?></p>
+		<a href="/app/start_invitation_from/<?=$invitation['id']?>" class="btn btn-large btn-primary">Make this invitation</a>
+	</div>
+	</div>
 
-<h3>About this invitation:</h3>
-<p>Blah blah some shit.</p>
+</div>
+</div>
 
-<a href="/app/start_invitation_from/<?=$invitation['id']?>" class="btn btn-large">Make this invitation</a><br />
+
+
+
+<br />
 
 
 <div class="invitation hidden <?=$invitation['orientation']?>" id="invitation_preview_base"><?=$invitation['invitation_html']?></div>
-<div class="invitation <?=$invitation['orientation']?> mid-size" id="invitation_preview_merged"><?=$invitation['invitation_html']?></div>
 	<input type="hidden" name="submitted" value="yes">
 	<div class="control-group hidden">
 		<label for="name" class="control-label">Name</label>

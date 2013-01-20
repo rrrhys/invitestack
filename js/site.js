@@ -21,15 +21,15 @@ app.delete_name = function(row_id){
 		if(row[0] == row_id){
 			delete_id = row[1];
 		}
-	})
-	if(delete_id == ""){
+	});
+	if(delete_id === ""){
 		delete_id = row_id;
 	}
 	var id = $("#base_id").val();
 	$.post("/app/delete_name/" + delete_id + "/" + id,{},function(return_value){
 	});
 	//alert(delete_id);
-}
+};
 $(function(){
 	//user has clicked to remove a name row
 	$(".remove").live('click',function(){
@@ -41,7 +41,14 @@ $(function(){
 	//user has clicked to preview a name row
 	$(".name_element").live('click',function(){
 		
-	})
+	});
+	//events
+
+		//invitation browse
+		$(".invitation_thumb_shell").live('click',function(){
+			var url = $(this).attr('data-invitation-url');
+			window.location = url;
+		});
 })
 app.clean_user_input_for_id = function(user_input){
 	user_input = user_input.replace(":","_");
@@ -137,8 +144,7 @@ app.merge_preview = function (){
 			$(".variable_fields").append(new_field_template.html());
 		}
 	});
-	
-}
+};
 app.get_replace_key = function(value){
 		for(field_index in app.merge_fields){
 			if(app.merge_fields[field_index][1] == value){

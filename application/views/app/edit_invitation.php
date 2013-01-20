@@ -20,7 +20,7 @@ if($edit_disabled == true){
 <?//=json_encode($invitation['fields'])?>
 <div class="span5">
 <!--input type="text" name="field_defaults" id="field_defaults" /-->
-<div class="invitation <?=$invitation['orientation']?>"><?=$invitation['invitation_html']?></div>
+<div class="invitation mid-size <?=$invitation['orientation']?>"><?=$invitation['invitation_html']?></div>
 </div>
 <div class="span5">
 	<input type="hidden" name="submitted" value="yes">

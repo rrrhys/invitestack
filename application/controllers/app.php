@@ -17,11 +17,13 @@ class App extends MY_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
-
+		public $facebook;
      function __construct(){
 	 	parent::__construct();
 	 	$this->load->model('invitation_model','invitations');
-	 	
+	 	$this->load->helper("Facebook");
+
+	 	$this->facebook = new dFacebook(false);
 	 }
 
 	public function index()
@@ -66,7 +68,7 @@ class App extends MY_Controller {
 		return $this->invitations->delete_name($id,$invitation_id,$this->session->userdata('id'));	
 	}
 	public function facebook_connect($invitation_id){
-	
+	//$this->load->helper('facebook');
 		//send user off to connect with facebook.
 		if($this->facebook->getUser()){
 			redirect("/app/start_invitation_from/$invitation_id");
@@ -81,20 +83,19 @@ class App extends MY_Controller {
 		if(!$this->session->userdata('id')){
 			//is user logged in with facebook?
 		}
-		if($this->session->userdata('id') || $this->facebook->getUser()){
+		//if($this->session->userdata('id') || $this->facebook->getUser()){
+		{
 			$owner_id = $this->session->userdata('id') ? $this->session->userdata('id') : $this->facebook->getUser();
 			$new_id = $this->invitations->start_invitation_from($invitation_id,$owner_id);
 
 			redirect("/app/personalise_invitation/$new_id");
 		}
-		else{
+		/*else{
 			redirect("/app/facebook_connect/$new_id");
-		}
+		}*/
 	}
 	public function view_invitation($invitation_id){
 			$page_data = $this->page_data_base();
-			$page_data['page_title'] = "View invitation";
-			$page_data['page_heading'] = "View Invitation";
 			if(!$this->invitations->user_owns_invitation($this->session->userdata('id'),$invitation_id)){
 				$page_data['edit_disabled'] = true;
 			}else{
@@ -102,6 +103,8 @@ class App extends MY_Controller {
 			}
 			
 			$page_data['invitation'] = $this->invitations->get_invitation($invitation_id);
+			$page_data['page_title'] = "View invitation: " . $page_data['invitation']['name'];
+			$page_data['page_heading'] = "View Invitation: " . $page_data['invitation']['name'];
 			if(!$page_data['invitation']){
 				$this->_invalid_page();
 			}
@@ -160,14 +163,15 @@ class App extends MY_Controller {
 			//die();
 			//open connection
 
-
-			exec('~/phantomjs /Users/rrrhys/projects/invites_ci/test.js http://www.invites.dev/app/finished_invitation/' . $p_id . '/' . $name . ' "#invitation_preview_merged" "'.$p_id.'_'.$name.'.jpg" 2>&1',$result);
+			$image_url ='http://www.invites.dev/app/finished_invitation/' . $p_id . '/' . $name;
+			$exec_string = '~/phantomjs /Users/rrrhys/projects/invites_ci/test.js '.$image_url . ' "#invitation_preview_merged" "'.$p_id.'_'.$name.'.jpg" 2>&1';
+			exec($exec_string,$result);
 			$result = implode("\r\n", $result);
 			$result_obj = json_decode($result);
-			//echo $result_obj->filename;
-
-			$this->output->set_content_type('jpeg');
-    		$this->output->set_output(file_get_contents('invitations/'.$result_obj->filename));
+			echo json_encode($result_obj);
+			echo "<img src='".'/invitations/'.$result_obj->filename."' />";
+			//$this->output->set_content_type('jpeg');
+    	//	$this->output->set_output(file_get_contents());
 			//echo "OK";
 		}
 	}
@@ -225,10 +229,10 @@ class App extends MY_Controller {
 
 				if(!$this->invitations->user_owns_invitation($this->session->userdata('id'),$invitation_id)){
 						$this->session->set_flashdata('bad',"User cannot edit that invitation.");
-						redirect("app/dashboard");	
+						redirect("/app/my_invitations");	
 				}else if ($this->invitations->update_invitation($invitation_id,$invitation)){
 						$this->session->set_flashdata('good','Invitation edited successfully.');
-						redirect("/app/dashboard");					
+						redirect("/app/my_invitations");					
 				}
 				else{
 						$this->session->set_flashdata('bad',implode("<br />", $this->timeclock->errors));
@@ -246,8 +250,9 @@ class App extends MY_Controller {
 			$this->output('app/new_invitation',$page_data);		
 		}else{
 			if($this->invitations->add_invitation($this->session->userdata('id'),
-			array('name'=>$this->input->post("name"),
-					'invitation_html'=>$this->input->post("invitation_html")))){
+			array(	'name'=>$this->input->post("name"),
+					'invitation_html'=>$this->input->post("invitation_html"),
+					'orientation'=>$this->input->post("orientation")))){
 						$this->session->set_flashdata('good','New Invitation added.');
 						redirect("/app/dashboard");
 					}

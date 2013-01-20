@@ -1,6 +1,6 @@
 var page = new WebPage(),
     address, output, size;
- var retval = {};  
+ var retval = {};
 retval.result = "failed";
 retval.messages = [];
 
@@ -10,15 +10,14 @@ capture = function(targetFile, clipRect) {
     try {
         page.render(targetFile);
     } catch (e) {
-    	return false;
+      return false;
 	}
     return this;
-}
+};
 
 captureSelector = function(targetFile, selector) {
-    var selector = selector;
-    return capture(targetFile, page.evaluate(function(selector) {  
-        try { 
+    return capture(targetFile, page.evaluate(function(selector) {
+        try {
             var clipRect = document.querySelector(selector).getBoundingClientRect();
             return {
                 top: clipRect.top,
@@ -30,34 +29,33 @@ captureSelector = function(targetFile, selector) {
 
         }
     }, { selector: selector }));
-}
+};
 
 if (phantom.args.length < 3) {
-    //console.log('Usage: test2.js buttons.html .selector_class');
+    //console.log('Usage: test2.js buttons.html .selector_class outputname');
     retval.messages.push("3 arguments required.");
     console.log(JSON.stringify(retval,undefined,4));
     phantom.exit();
 } else {
     address = phantom.args[0];
+    page.customHeaders = {'Referer': "www.invitestack.com"};
     page.viewportSize = { width: 200, height: 600 };
-    page.paperSize = { width: 200, height: 600, border: '0px' }
+    page.paperSize = { width: 200, height: 600, border: '0px' };
     page.open(address, function (status) {
         if (status !== 'success') {
             console.log('Unable to load the address!');
-        } else 
+        } else
         {
-        	//console.log(phantom.args[1]);
+          //console.log(phantom.args[1]);
            //dump out each icon in buttons.html as individual png file
            var outputfile = phantom.args[2];
            if(captureSelector("/Users/rrrhys/projects/invites_ci/invitations/" + outputfile,phantom.args[1])){
-           	
-           	retval['result'] = "success";
-           	retval['filename'] = outputfile;
+            retval['result'] = "success";
+            retval['filename'] = outputfile;
             console.log(JSON.stringify(retval,undefined,4));
            }
            else{
-	       
-	   	} 
+	   	}
             phantom.exit();
       }
     });

@@ -23,7 +23,7 @@ tr.Unfinished > td {
 	overflow: hidden;
 	position: relative;
 }
-.invitation.horizontal {
+.invitation.landscape {
 	width: 3in;
 	height: 2in;
 }
@@ -31,8 +31,53 @@ tr.Unfinished > td {
 	width: 2in;
 	height: 3in;
 }
+.invitation_thumb_shell {
+	height:330px;
+	width: 330px;
+	background-color: #eee;
+	border: 1px solid #ccc;
+	position: relative;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+/* Invitation browse specific */
+.invitation_thumb_shell .portrait {
+	margin-left: -1in;
+	margin-top: -1.5in;
+	left: 50%;
+	top:50%;
+}
+
+.invitation_thumb_shell .landscape {
+	margin-left: -1.5in;
+	margin-top: -1in;
+	left: 50%;
+	top: 50%;
+
+}
+.invitation_thumb_shell .invitation_name {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	text-align: center;
+	background-color: #fff;
+	background-color:rgba(255,255,255,0.8);
+	border-top: 1px solid #ccc;
+}
+/* END Browse specific */
+ .view_invitation {
+ 	padding-top: 20px;
+ }
+/*View invitation specific */
+
+/*END View invitation specific */
 .mid-size{
-	zoom: 2;
+	zoom: 1.3;
+	line-height:100%;
+}
+.mid-full_size {
+	zoom: 2.0;
 	line-height:100%;
 }
 .full_size{
