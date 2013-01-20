@@ -23,6 +23,7 @@
 					<li><a href="/auth/register">Register</a></li>
 				<?}?>					
 				<li><a href="/app/browse_invitations">Browse Invitations</a></li>
+				<li><a href="/app/get_ideas">Get ideas</a></li>
 				</ul>
 			</div>
 		</div>

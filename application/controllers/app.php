@@ -29,7 +29,7 @@ class App extends MY_Controller {
 	public function index()
 	{
 		if($this->session->userdata('id')){
-		redirect("/app/dashboard");
+		redirect("/app/my_invitations");
 		}else{
 		redirect("/app/browse_invitations");
 		}
@@ -40,6 +40,13 @@ class App extends MY_Controller {
 			$page_data['page_heading'] = "Browse Invitations";
 			$page_data['invitations'] = $this->invitations->list_invitations_merged();
 		$this->output('app/browse_invitations',$page_data);			
+	}
+	public function get_ideas(){
+		$page_data = $this->page_data_base();
+			$page_data['page_title'] = "Get Invitation Invitations";
+			$page_data['page_heading'] = "Get Invitation Invitations";
+			$page_data['invitations'] = $this->invitations->list_customer_invitations_merged();
+		$this->output('app/get_ideas',$page_data);			
 	}
 	public function my_invitations(){
 		$this->_redirect_if_not_logged_in();
@@ -62,7 +69,32 @@ class App extends MY_Controller {
 		$page_data['page_heading'] = "Personalise Invitation";
 	}
 	public function add_name($invitation_id,$name){
-		echo $this->invitations->add_name(urldecode($name),$invitation_id,$this->session->userdata('id'));
+		$return_data = array();
+		//add the name to the database
+		$return_data['id'] = $this->invitations->add_name(urldecode($name),$invitation_id,$this->session->userdata('id'));
+
+		//send back down the names block.
+
+		$invitation = $this->invitations->get_personalised_invitation($invitation_id);
+		if(!$invitation){
+			$this->_invalid_page();
+		}
+		$names_html = "";
+		foreach($invitation['names'] as $n){
+		
+			$base_path = "/app/finished_invitation/{$invitation['id']}/{$n['person_name']}";
+			$preview_jpg = "<a href='$base_path/jpg/' target='_blank'>(Preview:Jpg)</a>";
+			$preview_html = "<a href='$base_path/html/ target='_blank'>(Preview:Html)</a>";
+		
+			$names_html .= <<<HEREDOC
+								<tr class='name_element' id='{$n['id']}'>
+									<td>{$n['person_name']}</td>
+									<td>{$preview_html} {$preview_jpg} <a class='remove close' id='remove_{$n['id']}'>x</a></td>
+								</tr>
+HEREDOC;
+		}
+		$return_data['names_block'] = $names_html;
+		echo json_encode($return_data);
 	}
 	public function delete_name($id,$invitation_id){
 		return $this->invitations->delete_name($id,$invitation_id,$this->session->userdata('id'));	
@@ -254,7 +286,7 @@ class App extends MY_Controller {
 					'invitation_html'=>$this->input->post("invitation_html"),
 					'orientation'=>$this->input->post("orientation")))){
 						$this->session->set_flashdata('good','New Invitation added.');
-						redirect("/app/dashboard");
+						redirect("/app/my_invitations");
 					}
 					else{
 						$this->session->set_flashdata('bad',implode("<br />", $this->invitations->errors));

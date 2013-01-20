@@ -8,12 +8,13 @@ app.add_name = function(thename){
 	var preview_jpg = "<a href='/app/finished_invitation/" + id+ "/" + thename + "/jpg/'>(P:J)</a>";
 	var preview_html = "<a href='/app/finished_invitation/" + id + "/" + thename + "/html/'>(P:H)</a>";
 	var row_id = "element" + random_id;
-	$("#names_table").append("<tr class='name_element' id='" + row_id + "'><td>" + thename + "</td><td>" + preview_html + " " + preview_jpg + " <a class='remove close' id='remove_" + random_id + "'>x</a></td></tr>");
-	$.post("/app/add_name/" + id + "/" + thename,{},function(return_value){
-		alert(return_value);
-		delete_keys.push([row_id.substr(7),return_value]);
+	$.post("/app/add_name/" + id + "/" + thename,{},function(return_value_string){
+		var return_value = $.parseJSON(return_value_string);
+		//alert(return_value);
+		delete_keys.push([row_id.substr(7),return_value.id]);
+		$("#names_table").html(return_value.names_block);
 	});
-}
+};
 app.delete_name = function(row_id){
 	$("#" + row_id).remove();
 	var delete_id = "";

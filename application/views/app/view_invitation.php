@@ -8,11 +8,11 @@
 <input type="hidden" name="base_id" id="base_id" value="<?=$invitation['id']?>" />
 <input type="text" class="merge_field_input" id="test">
 <div class="view_invitation">
-	<div class="span9">
+	<div class="span10">
 	<div class="row-fluid">
-			<div class="span5">
+			<div class="span6">
 		
-				<div class="invitation <?=$invitation['orientation']?>" id="invitation_preview_merged"><?=$invitation['invitation_html']?></div>
+				<div class="invitation mid-size <?=$invitation['orientation']?>" id="invitation_preview_merged"><?=$invitation['invitation_html']?></div>
 			</div>
 	<div class="span4">
 		<h3>About:</h3>

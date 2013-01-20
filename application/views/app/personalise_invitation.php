@@ -24,8 +24,8 @@
 */
 </script>
 	<?=form_open("/app/save_personalised_invitation/" . $invitation['id'],array('class'=>'form-horizontal'))?>
-<span id="last_saved">Not Saved</span>
-<input type="text" name="base_id" id="base_id" value="<?=$invitation['id']?>" />
+<span id="last_saved">Not Saved</span><br />
+ID:<input type="text" name="base_id" id="base_id" value="<?=$invitation['id']?>" />
 <input type="text" class="merge_field_input" id="test">
 <div class="invitation hidden" id="invitation_preview_base"><?=$invitation['invitation_html']?></div>
 
@@ -43,23 +43,31 @@
 	</div>
 
 	<div class="variable_fields">
+
 		<?foreach($invitation['fields'] as $f){?>
 			
 			<div class="control-group merge_field_input" id="<?="{$f['field_type']}_".$f['field_name']?>">
-				<label class="control-label" for="<?="input_{$f['field_type']}_{$f['field_name']}"?>"><?="input_{$f['field_type']}_{$f['field_name']}"?></label>
-				<div class="controls"><input type="text" name="<?="input_{$f['field_type']}_{$f['field_name']}"?>" id="<?="input_{$f['field_type']}_{$f['field_name']}"?>" class="input input-xlarge user_template_input" value="<?=$f['value']?>" />
-				<?if($f['field_name'] == "name"){
-					?>
-					<span id="add_name" class="btn">Add Name</span>
-					<table class="table table-striped" id="names_table">
-						<?foreach($invitation['names'] as $n){?>
-	<?$preview_jpg = "<a href='/app/finished_invitation/{$invitation['id']}/{$n['person_name']}/jpg/'>(P:J)</a>";
-	$preview_html = "<a href='/app/finished_invitation/{$invitation['id']}/{$n['person_name']}/html/'>(P:H)</a>";
-	?><tr class='name_element' id='<?=$n['id']?>'><td><?=$n['person_name']?></td><td><?=$preview_html?> <?=$preview_jpg?> <a class='remove close' id='remove_<?=$n['id']?>'>x</a></td></tr>
-						<?}?>
-					</table>
-					<?
-				}?>
+				<label class="control-label" for="<?="input_{$f['field_type']}_{$f['field_name']}"?>">
+					<?=clean_name("input_{$f['field_type']}_{$f['field_name']}")?>
+				</label>
+				<div class="controls">
+					<input type="text" name="<?="input_{$f['field_type']}_{$f['field_name']}"?>" id="<?="input_{$f['field_type']}_{$f['field_name']}"?>" class="input input-xlarge user_template_input" value="<?=$f['value']?>" />
+					<?php if($f['field_name'] == "name"):?>
+						<span id="add_name" class="btn">Add Name</span>
+						<table class="table table-striped" id="names_table">
+							<?foreach($invitation['names'] as $n):?>
+								<?php
+								$base_path = "/app/finished_invitation/{$invitation['id']}/{$n['person_name']}";
+								$preview_jpg = "<a href='$base_path/jpg/' target='_blank'>(Preview:Jpg)</a>";
+								$preview_html = "<a href='$base_path/html/ target='_blank'>(Preview:Html)</a>";
+								?>
+								<tr class='name_element' id='<?=$n['id']?>'>
+									<td><?=$n['person_name']?></td>
+									<td><?=$preview_html?> <?=$preview_jpg?> <a class='remove close' id='remove_<?=$n['id']?>'>x</a></td>
+								</tr>
+							<?php endforeach?>
+						</table>
+					<?php endif?>
 				</div>
 			</div>
 		<?}?>		

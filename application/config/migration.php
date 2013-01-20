@@ -21,8 +21,9 @@ $config['migration_enabled'] = TRUE;
 | be upgraded / downgraded to.
 |
 */
-$config['migration_version'] = 9;
-
+//Use migration in CORE Controller
+$config['migration_version'] = 11;
+//********************************
 
 /*
 |--------------------------------------------------------------------------

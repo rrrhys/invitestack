@@ -57,6 +57,23 @@ class Invitation_model extends CI_Model
       }
       return $q;
     }
+    public function list_customer_invitations_merged($owner_id=false){
+      if($owner_id){
+       $this->db->where('owner_id',$owner_id);
+      }
+      $q = $this->db->get('customer_invitations')->result_array();
+      foreach($q as &$inv){
+         $this->db->where('invitation_id',$inv['id']);
+        $inv['fields'] = $this->db->get('customer_invitation_fields')->result_array();
+        foreach($inv['fields'] as $f){
+          $find_string = '{' . $f['field_type'] . ':' . $f['field_name'] .'}';
+          //echo $find_string;
+         $inv['invitation_html'] = str_replace($find_string, $f['value'], $inv['invitation_html']);
+        }
+
+      }
+      return $q;
+    }
     public function list_my_invitations($owner_id){
               if($owner_id){
                $this->db->where('owner_id',$owner_id);
@@ -88,6 +105,7 @@ class Invitation_model extends CI_Model
       unset($q['owner_id']);
       unset($q['long_description']);
       $q['owner_id'] = $owner_id;
+      $q['base_id'] = $invitation_id;
       $this->db->insert('customer_invitations',$q);
       $new_id = $this->db->insert_id();
 

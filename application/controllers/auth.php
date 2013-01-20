@@ -34,7 +34,7 @@ class Auth extends MY_Controller {
 		if($this->input->post('email_address')){
 			if($this->auth->login($this->input->post('email_address'),	$this->input->post('password'))){
 				$this->session->set_flashdata('good','Logged in successfully!');
-				redirect("/app/dashboard");
+				redirect("/app/my_invitations");
 			}
 			else{
 				$this->session->set_flashdata('bad',implode("<br />",$this->auth->errors));
