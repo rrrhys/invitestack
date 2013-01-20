@@ -5,4 +5,4 @@
 */cache/!index.html
 user_guide/*
 */config/database_password.php
-application/invitations/*
+invitations/*
