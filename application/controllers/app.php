@@ -31,8 +31,16 @@ class App extends MY_Controller {
 		if($this->session->userdata('id')){
 		redirect("/app/my_invitations");
 		}else{
-		redirect("/app/browse_invitations");
+		$this->landing_page();
 		}
+	}
+	public function landing_page(){
+		//echo "Landing Page";
+		$page_data = $this->page_data_base();
+			$page_data['page_title'] = "";
+			$page_data['page_heading'] = "";
+			$page_data['invitations'] = $this->invitations->list_invitations_merged();
+		$this->output('app/landing_page',$page_data,'default_full_size');			
 	}
 	public function browse_invitations(){
 		$page_data = $this->page_data_base();

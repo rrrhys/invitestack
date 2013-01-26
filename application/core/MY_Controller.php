@@ -70,6 +70,13 @@ class MY_Controller extends CI_Controller {
 	 			$views['content'] = $this->load->view($view_name,$page_data,true);
 	 			$this->load->view("default",array_merge($views,$page_data));
 	 		break;
+	 		case("default_full_size"):
+	 			
+	 			$views['header'] = $this->load->view("header",$page_data,true);
+	 			$views['footer'] = $this->load->view("footer",$page_data,true);
+	 			$views['content'] = $this->load->view($view_name,$page_data,true);
+	 			$this->load->view("default_full_size",array_merge($views,$page_data));
+	 		break;
 	 		case("scripts_and_content"):
 	 			
 	 			$views['header'] = $this->load->view("header",$page_data,true);

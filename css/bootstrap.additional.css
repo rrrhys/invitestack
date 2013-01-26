@@ -31,7 +31,34 @@ tr.Unfinished > td {
 	width: 2in;
 	height: 3in;
 }
-.invitation_thumb_shell {
+.landing_page_invitation_shell {
+	float: left;
+	margin: 10px;
+}
+.landing_page_invitation_shell > .invitation_thumb_shell {
+	height:100px;
+	width: 100px;
+	background-color: #eee;
+	border: 1px solid #ccc;
+	position: relative;
+	border-radius: 5px;
+	cursor: pointer;
+}
+.landing_page_invitation_shell .portrait {
+	margin-left: -1in;
+	margin-top: -1.5in;
+	left: 50%;
+	top:50%;
+}
+
+.landing_page_invitation_shell .landscape {
+	margin-left: -1.5in;
+	margin-top: -1in;
+	left: 50%;
+	top: 50%;
+
+}
+.browse_invitation_shell > .invitation_thumb_shell {
 	height:330px;
 	width: 330px;
 	background-color: #eee;
@@ -42,21 +69,21 @@ tr.Unfinished > td {
 }
 
 /* Invitation browse specific */
-.invitation_thumb_shell .portrait {
+.browse_invitation_shell > .portrait {
 	margin-left: -1in;
 	margin-top: -1.5in;
 	left: 50%;
 	top:50%;
 }
 
-.invitation_thumb_shell .landscape {
+.browse_invitation_shell > .landscape {
 	margin-left: -1.5in;
 	margin-top: -1in;
 	left: 50%;
 	top: 50%;
 
 }
-.invitation_thumb_shell .invitation_name {
+.browse_invitation_shell > .invitation_name {
 	position: absolute;
 	bottom: 0px;
 	width: 100%;
@@ -83,6 +110,9 @@ tr.Unfinished > td {
 .full_size{
 	zoom: 8.34; /*multiply by 2 because we show half size, then by 4.17 to 72dpi to 300 dpi*/
 	line-height:100%;
+}
+.tiny_thumb {
+	zoom: 0.3;
 }
 
 /*.horizontal{
