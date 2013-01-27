@@ -357,6 +357,32 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
+$config_messages = array();
+$instance_configs_expected = array();
+$instance_configs_expected['instance_config'] = "false";
+$instance_configs_expected['phantomjs_path'] = "/path/to/phantomjs/";
+
+
+//set config vars to be the defaults.
+foreach($instance_configs_expected as $k=>$v){
+	$config[$k] = $v;
+}
+//require the config file
+@include("instance_config.php");
+//check if anything is still the default, if it is tell the user to config properly.
+foreach($instance_configs_expected as $k=>$v){
+	//echo $k;
+	if($config[$k] == $instance_configs_expected[$k]){
+		$config_messages[] = '<li>Set $config[\''.$k.'\'] = \''.$v.'\'</li>';
+	}
+}
+if(count($config_messages) > 0){
+	echo "Create config/instance_config.php and set the following config variables:";
+	foreach($config_messages as $c){
+		echo "$c\n";
+	}
+	die();
+}
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */

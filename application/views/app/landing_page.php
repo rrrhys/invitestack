@@ -1,6 +1,6 @@
-<div class="hero-unit row-fluid">
-	<div class="span5">
-		<h1>Invite Stack</h1>
+<div class="hero-unit">
+	<div class="content">
+		<h1 class="header">Invite Stack</h1>
 		<ul style='margin-top:10px'>
 			<li>Choose an invitation</li>
 			<li>Personalise it</li>
@@ -9,19 +9,18 @@
 			<li>Print at photo booth</li>
 		</ul>
 	</div>
-	<div class="span4">
-			<?php foreach($invitations as $i):?>
+			<?php /*foreach($invitations as $i):*/?>
+			<?php $i = $invitations[0];?>
 				<div class="landing_page_invitation_shell">
 					<div data-invitation-url="/app/view_invitation/<?=$i['id']?>" class="invitation_thumb_shell">
-						<div class="invitation <?=$i['orientation']?> tiny_thumb">
+						<div class="invitation <?=$i['orientation']?>">
 							<?=$i['invitation_html']?>
 						</div>
 					</div>
 					
 
 				</div>
-			<?php endforeach?>
+			<?php /*endforeach*/?>
 
-	</div>
 	
 </div>

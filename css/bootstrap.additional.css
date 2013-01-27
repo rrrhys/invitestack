@@ -1,3 +1,6 @@
+
+@import url(http://fonts.googleapis.com/css?family=Just+Me+Again+Down+Here);
+
 body {
 	padding-top: 60px;
 	}
@@ -31,9 +34,13 @@ tr.Unfinished > td {
 	width: 2in;
 	height: 3in;
 }
+/* Landing Page */
+
 .landing_page_invitation_shell {
-	float: left;
-	margin: 10px;
+	position: absolute;
+	left: 600px;
+	top: 0;
+
 }
 .landing_page_invitation_shell > .invitation_thumb_shell {
 	height:100px;
@@ -44,20 +51,30 @@ tr.Unfinished > td {
 	border-radius: 5px;
 	cursor: pointer;
 }
-.landing_page_invitation_shell .portrait {
-	margin-left: -1in;
-	margin-top: -1.5in;
-	left: 50%;
-	top:50%;
-}
 
-.landing_page_invitation_shell .landscape {
-	margin-left: -1.5in;
-	margin-top: -1in;
-	left: 50%;
-	top: 50%;
+.hero-unit .content {
+	color: #fff;
+}
+.hero-unit h1.header {
+	font-family: 'Just Me Again Down Here', cursive;
+	
+	font-size: 72pt;
+	font-weight: normal;
+}
+.hero-unit {
+	position: relative;
+	background: #7280a0; /* Old browsers */
+background: -moz-linear-gradient(-45deg,  #7280a0 0%, #363d5b 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#7280a0), color-stop(100%,#363d5b)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(-45deg,  #7280a0 0%,#363d5b 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(-45deg,  #7280a0 0%,#363d5b 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(-45deg,  #7280a0 0%,#363d5b 100%); /* IE10+ */
+background: linear-gradient(135deg,  #7280a0 0%,#363d5b 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7280a0', endColorstr='#363d5b',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 
 }
+/* End Landing Page */
+
 .browse_invitation_shell > .invitation_thumb_shell {
 	height:330px;
 	width: 330px;
