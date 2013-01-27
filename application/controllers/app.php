@@ -169,6 +169,8 @@ HEREDOC;
 			$this->output('app/personalise_invitation',$page_data);			
 	}
 	public function finished_invitation($p_id,$name,$format="html"){
+		echo json_encode($_SERVER);
+		die();
 			$page_data = $this->page_data_base();
 			$page_data['page_title'] = "Personalise invitation";
 			$page_data['page_heading'] = "Personalise Invitation";
@@ -193,17 +195,17 @@ HEREDOC;
 
 			//set POST variables
 			$url = "http://www.screenshotter.dev";
-			$fields = array(
+		/*	$fields = array(
 									'page_to_download'=>urlencode("http://www.invites.dev/app/finished_invitation/$p_id/$name/html"));
 			$fields_string = "";
 			//url-ify the data for the POST
-			foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.''; }
+			foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.''; }*/
 			//rtrim($fields_string,'&');
 			//echo $fields_string;
 			//die();
 			//open connection
 
-			$image_url ='http://www.invites.dev/app/finished_invitation/' . $p_id . '/' . $name;
+			$image_url =$_SERVER['HTTP_HOST'] . '/app/finished_invitation/' . $p_id . '/' . $name;
 			$exec_string = $this->config->config['phantomjs_path'] .'/phantomjs '.$_SERVER['DOCUMENT_ROOT'] . '/test.js '.$image_url . ' "#invitation_preview_merged" "'.$p_id.'_'.$name.'.jpg" 2>&1';
 			exec($exec_string,$result);
 			//echo json_encode($result);
