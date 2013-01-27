@@ -169,7 +169,7 @@ HEREDOC;
 			$this->output('app/personalise_invitation',$page_data);			
 	}
 	public function finished_invitation($p_id,$name,$format="html"){
-		echo json_encode($_SERVER);
+		//echo json_encode($_SERVER);
 			$page_data = $this->page_data_base();
 			$page_data['page_title'] = "Personalise invitation";
 			$page_data['page_heading'] = "Personalise Invitation";
