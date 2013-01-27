@@ -195,7 +195,7 @@ HEREDOC;
 			//set POST variables
 			$url = "http://www.screenshotter.dev";
 		/*	$fields = array(
-									'page_to_download'=>urlencode("http://www.invites.dev/app/finished_invitation/$p_id/$name/html"));
+									'page_to_download'=>urlencode("http://www./app/finished_invitation/$p_id/$name/html"));
 			$fields_string = "";
 			//url-ify the data for the POST
 			foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.''; }*/
@@ -204,8 +204,11 @@ HEREDOC;
 			//die();
 			//open connection
 
-			$image_url =$_SERVER['HTTP_HOST'] . '/app/finished_invitation/' . $p_id . '/' . $name;
+			$image_url ="http://".$_SERVER['HTTP_HOST'] . '/app/finished_invitation/' . $p_id . '/' . $name;
 			$exec_string = $this->config->config['phantomjs_path'] .'/phantomjs '.$_SERVER['DOCUMENT_ROOT'] . '/test.js '.$image_url . ' "#invitation_preview_merged" "'.$p_id.'_'.$name.'.jpg" 2>&1';
+			echo $exec_string;
+			//flush();
+			//die();
 			exec($exec_string,$result);
 			//echo json_encode($result);
 			$result = implode("\r\n", $result);
