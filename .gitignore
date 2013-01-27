@@ -6,3 +6,4 @@
 user_guide/*
 */config/database_password.php
 invitations/*
+*/config/instance_config.php
