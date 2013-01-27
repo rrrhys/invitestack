@@ -208,7 +208,7 @@ HEREDOC;
 			exec($exec_string,$result);
 			//echo json_encode($result);
 			$result = implode("\r\n", $result);
-			//echo json_encode($result);
+			echo json_encode($result);
 			$result_obj = json_decode($result);
 			echo "<img src='".'/invitations/'.$result_obj->filename."' />";
 			//$this->output->set_content_type('jpeg');
