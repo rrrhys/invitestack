@@ -204,15 +204,16 @@ HEREDOC;
 			//open connection
 
 			$image_url ='http://www.invites.dev/app/finished_invitation/' . $p_id . '/' . $name;
-			$exec_string = $this->config->config['phantomjs_path'] .'/phantomjs /Users/rrrhys/projects/invites_ci/test.js '.$image_url . ' "#invitation_preview_merged" "'.$p_id.'_'.$name.'.jpg" 2>&1';
+			$exec_string = $this->config->config['phantomjs_path'] .'/phantomjs '.$_SERVER['DOCUMENT_ROOT'] . '/test.js '.$image_url . ' "#invitation_preview_merged" "'.$p_id.'_'.$name.'.jpg" 2>&1';
 			exec($exec_string,$result);
 			//echo json_encode($result);
 			$result = implode("\r\n", $result);
+			//echo json_encode($result);
 			$result_obj = json_decode($result);
-			//echo json_encode($result_obj);
-			//echo "<img src='".'/invitations/'.$result_obj->filename."' />";
-			$this->output->set_content_type('jpeg');
-    		$this->output->set_output(file_get_contents());
+			echo "<img src='".'/invitations/'.$result_obj->filename."' />";
+			//$this->output->set_content_type('jpeg');
+			//echo json_encode($_SERVER['DOCUMENT_ROOT'].'/invitations/'.$result_obj->filename);
+    	//	$this->output->set_output(file_get_contents($_SERVER['DOCUMENT_ROOT'].'/invitations/'.$result_obj->filename));
 			//echo "OK";
 		}
 	}
