@@ -12,7 +12,7 @@ class Migration_Add_customer_invitations_table extends CI_Migration {
 			'name'=>array('type'=>'VARCHAR',
 								'constraint'=>'100'),
 			'invitation_html'=>array('type'=>'varchar',
-								'constraint'=>'1000'),
+								'constraint'=>'10000'),
 			'fields_entered'=>array('type'=>'varchar',
 								'constraint'=>'1000',
 								'default'=>'0')

@@ -104,7 +104,9 @@ app.merge_preview = function (){
 			var var_end = i;
 			var merge_field = invitation_html.substr(var_start+1,var_end - var_start-1);
 			debug && console.log("Field found: " + merge_field);
-			app.merge_fields.push([merge_field,app.clean_user_input_for_id(merge_field)]);
+			if(merge_field.substr(0,6) == "merge:"){
+			 app.merge_fields.push([merge_field,app.clean_user_input_for_id(merge_field)]);
+			}
 		}
 	}
 
