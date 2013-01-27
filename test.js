@@ -49,7 +49,7 @@ if (phantom.args.length < 3) {
           //console.log(phantom.args[1]);
            //dump out each icon in buttons.html as individual png file
            var outputfile = phantom.args[2];
-           if(captureSelector("/Users/rrrhys/projects/invites_ci/invitations/" + outputfile,phantom.args[1])){
+           if(captureSelector(outputfile,phantom.args[1])){
             retval['result'] = "success";
             retval['filename'] = outputfile;
             console.log(JSON.stringify(retval,undefined,4));
