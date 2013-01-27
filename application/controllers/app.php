@@ -205,7 +205,7 @@ HEREDOC;
 			//open connection
 
 			$image_url ="http://".$_SERVER['HTTP_HOST'] . '/app/finished_invitation/' . $p_id . '/' . $name;
-			$exec_string = $this->config->config['phantomjs_path'] .'/phantomjs '.$_SERVER['DOCUMENT_ROOT'] . '/test.js '.$image_url . ' "#invitation_preview_merged" "'.$p_id.'_'.$name.'.jpg" 2>&1';
+			$exec_string = $this->config->config['phantomjs_path'] .'/phantomjs '.$_SERVER['DOCUMENT_ROOT'] . '/test.js '.$image_url . ' "#invitation_preview_merged" "'.$_SERVER['DOCUMENT_ROOT'].'/invitations/'.$p_id.'_'.$name.'.jpg" 2>&1';
 			echo $exec_string;
 			//flush();
 			//die();
