@@ -214,7 +214,7 @@ HEREDOC;
 			$result = implode("\r\n", $result);
 			echo json_encode($result);
 			$result_obj = json_decode($result);
-			echo "<img src='".'/invitations/'.$result_obj->filename."' />";
+			echo "<img src='/invitations/".$p_id . '_' . $name.".jpg'>";
 			//$this->output->set_content_type('jpeg');
 			//echo json_encode($_SERVER['DOCUMENT_ROOT'].'/invitations/'.$result_obj->filename);
     	//	$this->output->set_output(file_get_contents($_SERVER['DOCUMENT_ROOT'].'/invitations/'.$result_obj->filename));
