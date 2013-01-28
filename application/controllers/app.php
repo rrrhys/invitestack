@@ -168,7 +168,7 @@ HEREDOC;
 
 			$this->output('app/personalise_invitation',$page_data);			
 	}
-	public function finished_invitation($p_id,$name,$format="html"){
+	public function finished_invitation($p_id,$name,$unique_hash="",$format="html"){
 		//echo json_encode($_SERVER);
 			$page_data = $this->page_data_base();
 			$page_data['page_title'] = "Personalise invitation";
@@ -189,36 +189,7 @@ HEREDOC;
 		$this->output('app/finished_invitation',$page_data,'scripts_and_content');
 		}
 		else{
-			//echo "JPG:";
-			//exec($command . ' 2>&1',$output);
-
-			//set POST variables
-			$url = "http://www.screenshotter.dev";
-		/*	$fields = array(
-									'page_to_download'=>urlencode("http://www./app/finished_invitation/$p_id/$name/html"));
-			$fields_string = "";
-			//url-ify the data for the POST
-			foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.''; }*/
-			//rtrim($fields_string,'&');
-			//echo $fields_string;
-			//die();
-			//open connection
-
-			$image_url ="http://".$_SERVER['HTTP_HOST'] . '/app/finished_invitation/' . $p_id . '/' . $name;
-			$exec_string = $this->config->config['phantomjs_path'] .'/phantomjs '.$_SERVER['DOCUMENT_ROOT'] . '/test.js '.$image_url . ' "#invitation_preview_merged" "'.$_SERVER['DOCUMENT_ROOT'].'/invitations/'.$p_id.'_'.$name.'.jpg" 2>&1';
-			echo $exec_string;
-			//flush();
-			//die();
-			exec($exec_string,$result);
-			//echo json_encode($result);
-			$result = implode("\r\n", $result);
-			echo json_encode($result);
-			$result_obj = json_decode($result);
-			echo "<img src='/invitations/".$p_id . '_' . $name.".jpg'>";
-			//$this->output->set_content_type('jpeg');
-			//echo json_encode($_SERVER['DOCUMENT_ROOT'].'/invitations/'.$result_obj->filename);
-    	//	$this->output->set_output(file_get_contents($_SERVER['DOCUMENT_ROOT'].'/invitations/'.$result_obj->filename));
-			//echo "OK";
+			echo "<img src='".$this->invitations->make_image_if_not_exists($p_id,$name,$unique_hash)."'>";
 		}
 	}
 	public function save_personalised_invitation($id){

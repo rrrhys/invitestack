@@ -22,7 +22,6 @@ tr.Unfinished > td {
 	padding: 20px;
 }
 .invitation {
-	border: 1px solid #eee;
 	overflow: hidden;
 	position: relative;
 }
@@ -36,22 +35,6 @@ tr.Unfinished > td {
 }
 /* Landing Page */
 
-.landing_page_invitation_shell {
-	position: absolute;
-	left: 600px;
-	top: 0;
-
-}
-.landing_page_invitation_shell > .invitation_thumb_shell {
-	height:100px;
-	width: 100px;
-	background-color: #eee;
-	border: 1px solid #ccc;
-	position: relative;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
 .hero-unit .content {
 	color: #fff;
 }
@@ -60,6 +43,8 @@ tr.Unfinished > td {
 	
 	font-size: 72pt;
 	font-weight: normal;
+text-shadow: 2px 8px 6px rgba(0,0,0,0.2),
+                 0px -5px 35px rgba(255,255,255,0.3);
 }
 .hero-unit {
 	position: relative;
@@ -72,6 +57,13 @@ background: -ms-linear-gradient(-45deg,  #7280a0 0%,#363d5b 100%); /* IE10+ */
 background: linear-gradient(135deg,  #7280a0 0%,#363d5b 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7280a0', endColorstr='#363d5b',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 
+}
+.hero-unit li {
+	list-style-type: none;
+	line-height: 18pt;
+	font-size: 14pt;
+	color: #DCD6FF;
+	text-shadow: 0px 2px 3px rgba(0,0,0,0.4);
 }
 /* End Landing Page */
 
