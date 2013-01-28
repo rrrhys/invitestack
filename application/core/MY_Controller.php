@@ -39,7 +39,8 @@ class MY_Controller extends CI_Controller {
 	 				 'warning_flash'=>$this->session->flashdata('warning'),
 	 				 'logged_in'=>$this->session->userdata('id'),
 	 				 'auth_level'=>$auth_level,
-	 				 'avatar'=>$avatar_url);
+	 				 'avatar'=>$avatar_url,
+	 				 'analytics_key'=>$this->config->config['analytics_key']);
 	 	//echo json_encode($page_array);
 	 	return $page_array;
 	 }

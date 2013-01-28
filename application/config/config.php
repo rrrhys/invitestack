@@ -361,6 +361,7 @@ $config_messages = array();
 $instance_configs_expected = array();
 $instance_configs_expected['instance_config'] = "false";
 $instance_configs_expected['phantomjs_path'] = "/path/to/phantomjs/";
+$instance_configs_expected['analytics_key'] = "(Google analytics key)";
 
 
 //set config vars to be the defaults.
