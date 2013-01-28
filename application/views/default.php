@@ -7,7 +7,7 @@
 		<div class="container">
 
 			<a href="/app/" class="brand">
-				Project Name
+				
 			</a>
 			<div class="nav-collapse">
 				<ul class="nav">
