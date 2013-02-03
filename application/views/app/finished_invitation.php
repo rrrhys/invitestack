@@ -7,7 +7,7 @@
 </script>
 <div class="invitation hidden" id="invitation_preview_base"><?=$invitation['invitation_html']?></div>
 
-<div class="invitation full_size <?=$invitation['orientation']?>" id="invitation_preview_merged"><?=$invitation['invitation_html']?></div>
+<div class="invitation <?=$size?> <?=$invitation['orientation']?>" id="invitation_preview_merged"><?=$invitation['invitation_html']?></div>
 
 	<div class="control-group hidden">
 		<label for="name" class="control-label">Name</label>

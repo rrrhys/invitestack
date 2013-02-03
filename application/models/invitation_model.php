@@ -40,13 +40,35 @@ class Invitation_model extends CI_Model
         return false;
       }
     }
-    public function get_image_url($invitation_id){
-      $web_path = $this->make_image_if_not_exists($invitation_id,"John",date("dMY"));
+    public function get_generic_image_url($invitation_id,$size="thumb"){
+      $web_path = $this->make_generic_image_if_not_exists($invitation_id,"John",date("dMY"),$size);
       return $web_path;
     }
-    public function make_image_if_not_exists($invitation_id,$invitation_name,$unique_hash="1"){
-      $image_url ="http://".$_SERVER['HTTP_HOST'] . '/app/finished_invitation/' . $invitation_id . '/' . $invitation_name . '/' . $unique_hash;
-      $filename_to_make = $invitation_id.'_'.$invitation_name.'_'.$unique_hash.'.jpg';
+    public function make_generic_image_if_not_exists($invitation_id,$invitation_name,$unique_hash="1",$size="thumb"){
+      $image_url ="http://".$_SERVER['HTTP_HOST'] . '/app/generic_invitation/' . $invitation_id . '/' . $invitation_name . '/' . $unique_hash . '/html/' . $size;
+      $filename_to_make = "Generic_".$invitation_id.'_'.$invitation_name.'_'.$unique_hash . $size.'.jpg';
+      $exec_string = $this->config->config['phantomjs_path'] .'/phantomjs '.$_SERVER['DOCUMENT_ROOT'] . '/test.js '.$image_url . ' "#invitation_preview_merged" "'.$_SERVER['DOCUMENT_ROOT'].'/invitations/'.$filename_to_make.'" 2>&1';
+      //echo $exec_string;
+      $web_path = "/invitations/".$filename_to_make;
+
+      if(!file_exists($_SERVER['DOCUMENT_ROOT'].'/invitations/'.$filename_to_make)){
+      exec($exec_string,$result);
+      //echo json_encode($result);
+      $result = implode("\r\n", $result);
+      $result_obj = json_decode($result);
+      
+      $real_path = $result_obj->filename;
+      //echo $real_path;
+      }
+      return $web_path;
+    }
+    public function get_image_url($invitation_id,$size="thumb"){
+      $web_path = $this->make_image_if_not_exists($invitation_id,"John",date("dMY"),$size);
+      return $web_path;
+    }
+    public function make_image_if_not_exists($invitation_id,$invitation_name,$unique_hash="1",$size="thumb"){
+      $image_url ="http://".$_SERVER['HTTP_HOST'] . '/app/finished_invitation/' . $invitation_id . '/' . $invitation_name . '/' . $unique_hash . '/html/' . $size;
+      $filename_to_make = $invitation_id.'_'.$invitation_name.'_'.$unique_hash . $size.'.jpg';
       $exec_string = $this->config->config['phantomjs_path'] .'/phantomjs '.$_SERVER['DOCUMENT_ROOT'] . '/test.js '.$image_url . ' "#invitation_preview_merged" "'.$_SERVER['DOCUMENT_ROOT'].'/invitations/'.$filename_to_make.'" 2>&1';
       //echo $exec_string;
       $web_path = "/invitations/".$filename_to_make;
@@ -76,7 +98,8 @@ class Invitation_model extends CI_Model
          $inv['invitation_html'] = str_replace($find_string, $f['value'], $inv['invitation_html']);
 
         }
-        $inv['image_url'] = $this->get_image_url($inv['id']);
+        $inv['image_url_thumb'] = $this->get_generic_image_url($inv['id'],"thumb");
+        $inv['image_url_print'] = $this->get_generic_image_url($inv['id'],"print");
       }
       return $q;
     }

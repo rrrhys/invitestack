@@ -168,11 +168,37 @@ HEREDOC;
 
 			$this->output('app/personalise_invitation',$page_data);			
 	}
-	public function finished_invitation($p_id,$name,$unique_hash="",$format="html"){
+	public function generic_invitation($generic_id,$name,$unique_hash="",$format="html",$size="thumb"){
+		//echo json_encode($_SERVER);
+			$page_data = $this->page_data_base();
+			$page_data['page_title'] = "Generic invitation";
+			$page_data['page_heading'] = "Generic Invitation";
+			$page_data['size'] = $size;
+		$page_data['invitation'] = $this->invitations->get_invitation($generic_id);
+		if(!$page_data['invitation']){
+			$this->_invalid_page();
+		}
+		//overwrite the name field with that supplied.
+		foreach($page_data['invitation']['fields'] as &$f){
+			if($f['field_name'] == "name"){
+				$f['value'] = urldecode($name);
+			}
+		}
+		
+		//echo json_encode($page_data);
+		if($format == "html"){
+		$this->output('app/finished_invitation',$page_data,'scripts_and_content');
+		}
+		else{
+			echo "<img src='".$this->invitations->make_generic_image_if_not_exists($generic_id,$name,$unique_hash,$size)."'>";
+		}
+	}
+	public function finished_invitation($p_id,$name,$unique_hash="",$format="html",$size="thumb"){
 		//echo json_encode($_SERVER);
 			$page_data = $this->page_data_base();
 			$page_data['page_title'] = "Personalise invitation";
 			$page_data['page_heading'] = "Personalise Invitation";
+			$page_data['size'] = $size;
 		$page_data['invitation'] = $this->invitations->get_personalised_invitation($p_id);
 		if(!$page_data['invitation']){
 			$this->_invalid_page();
@@ -189,7 +215,7 @@ HEREDOC;
 		$this->output('app/finished_invitation',$page_data,'scripts_and_content');
 		}
 		else{
-			echo "<img src='".$this->invitations->make_image_if_not_exists($p_id,$name,$unique_hash)."'>";
+			echo "<img src='".$this->invitations->make_image_if_not_exists($p_id,$name,$unique_hash,$size)."'>";
 		}
 	}
 	public function save_personalised_invitation($id){

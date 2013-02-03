@@ -1,6 +1,6 @@
 <style type="text/css">
 .hero-unit {
-	margin-top: 100px;
+	margin-top: 80px;
 	height: 300px;
 	font-family: Helvetica;
 	font-size: 12pt;
@@ -9,6 +9,32 @@
 	width: 300px;
 	height: 400px;
 	position: relative;
+}
+@media (max-width: 768px) {
+	.hero_invitation {
+		width: 150px;
+		height: 200px;
+		position: relative;
+	}
+	.hero-unit {
+	margin-top: 60px;
+	height: 240px;
+	font-family: Helvetica;
+	font-size: 10pt;
+	}
+}
+@media (min-width: 768px) and (max-width: 979px) {
+	.hero_invitation {
+		width: 240px;
+		height: 320px;
+		position: relative;
+	}
+	.hero-unit {
+	margin-top: 60px;
+	height: 240px;
+	font-family: Helvetica;
+	font-size: 10pt;
+	}
 }
 img.hero_invitation	{
 	position: absolute;
@@ -57,12 +83,19 @@ div.hero_invitation {
 			<li>Download finished invitations</li>
 			<li>Print at photo booth</li>
 		</ul>
+		<div class="invitation_scroll">
+		<?php foreach($invitations as $i):?>
+			<a href="/app/view_invitation/<?=$i['id']?>">
+				<img src="<?php echo $i['image_url_thumb'];?>">
+			</a>
+		<?php endforeach?>
+		</div>
 	</div>
 			<?php $i = $invitations[0];?>
 			<div class="hero_invitation">
 				<div class="shadow left">&nbsp;</div>
 				<div class="shadow right">&nbsp;</div>
-				<img src="<?php echo $i['image_url'];?>" class="hero_invitation">
+				<img src="<?php echo $i['image_url_thumb'];?>" class="hero_invitation">
 				<div class="invitation_css">
 					<?php echo $i['invitation_html'];?>
 				</div>

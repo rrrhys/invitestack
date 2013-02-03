@@ -57,9 +57,10 @@ ID:<input type="text" name="base_id" id="base_id" value="<?=$invitation['id']?>"
 						<table class="table table-striped" id="names_table">
 							<?foreach($invitation['names'] as $n):?>
 								<?php
-								$base_path = "/app/finished_invitation/{$invitation['id']}/{$n['person_name']}";
+								$hash = md5($invitation['invitation_html']);
+								$base_path = "/app/finished_invitation/{$invitation['id']}/{$n['person_name']}/$hash";
 								$preview_jpg = "<a href='$base_path/jpg/' target='_blank'>(Preview:Jpg)</a>";
-								$preview_html = "<a href='$base_path/html/ target='_blank'>(Preview:Html)</a>";
+								$preview_html = "<a href='$base_path/html/' target='_blank'>(Preview:Html)</a>";
 								?>
 								<tr class='name_element' id='<?=$n['id']?>'>
 									<td><?=$n['person_name']?></td>

@@ -39,8 +39,8 @@ if (phantom.args.length < 3) {
 } else {
     address = phantom.args[0];
     page.customHeaders = {'Referer': "www.invitestack.com"};
-    page.viewportSize = { width: 200, height: 600 };
-    page.paperSize = { width: 200, height: 600, border: '0px' };
+    page.viewportSize = { width: 1, height: 1 };
+    page.paperSize = { width: 1, height: 1, border: '0px' };
     page.open(address, function (status) {
         if (status !== 'success') {
             console.log('Unable to load the address!');
