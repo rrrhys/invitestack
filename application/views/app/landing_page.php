@@ -72,6 +72,9 @@ div.hero_invitation {
 	-webkit-transform: rotate(11deg);
 	right: 2px;
 }
+.invitation_scroll img {
+	height: 90px;
+}
 </style>
 <div class="hero-unit">
 	<div class="content">

@@ -39,9 +39,10 @@ tr.Unfinished > td {
 	color: #fff;
 }
 .hero-unit .invitation_scroll {
-	background-color: #fff;
 	width: 750px;
 	height: 90px;
+	overflow: auto;
+	overflow-y: hidden;
 }
 .hero-unit h1 {
 	font-family: 'Just Me Again Down Here', cursive;
