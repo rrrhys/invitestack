@@ -221,7 +221,7 @@ class Invitation_model extends CI_Model
       return true;
     }
     public function update_invitation($invitation_id,$invitation){
-      $updatable_columns = array('name','invitation_html');
+      $updatable_columns = array('name','invitation_html','long_description');
 
     	$update_array = array();
       foreach($updatable_columns as $updatable_column){

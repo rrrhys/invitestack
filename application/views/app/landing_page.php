@@ -89,19 +89,17 @@ div.hero_invitation {
 		<div class="invitation_scroll">
 		<?php foreach($invitations as $i):?>
 			<a href="/app/view_invitation/<?=$i['id']?>">
-				<img src="<?php echo $i['image_url_thumb'];?>">
+				<img src="<?php echo $i['image_url_thumb'];?>" alt="<?=$i['long_description']?>">
 			</a>
 		<?php endforeach?>
 		</div>
 	</div>
-			<?php $i = $invitations[0];?>
+			<?php $i = $invitations[count($invitations)-1];?>
 			<div class="hero_invitation">
 				<div class="shadow left">&nbsp;</div>
 				<div class="shadow right">&nbsp;</div>
 				<img src="<?php echo $i['image_url_thumb'];?>" class="hero_invitation">
-				<div class="invitation_css">
-					<?php echo $i['invitation_html'];?>
-				</div>
+
 			</div>
 
 

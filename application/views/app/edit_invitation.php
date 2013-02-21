@@ -5,7 +5,7 @@ if($edit_disabled == true){
 	$disabled_field = "disabled";
 }?>
 <?if(!$disabled_field){?>
-	<?=form_open("/app/edit_invitation/" . $invitation['id'],array('class'=>'form-horizontal'))?>
+	<?=form_open("/app/edit_invitation/" . $invitation['id'])?>
 <?}?>
 <script type="text/javascript">
 	$(function(){
@@ -18,24 +18,26 @@ if($edit_disabled == true){
 
 </script>
 <?//=json_encode($invitation['fields'])?>
-<div class="span5">
-<!--input type="text" name="field_defaults" id="field_defaults" /-->
-<div class="invitation mid-size <?=$invitation['orientation']?>"><?=$invitation['invitation_html']?></div>
-</div>
-<div class="span5">
+<div class="row">
+	<div class="span4">
+	<!--input type="text" name="field_defaults" id="field_defaults" /-->
+	<div class="invitation mid-size <?=$invitation['orientation']?>"><?=$invitation['invitation_html']?></div>
+	</div>
+
+<div class="span8">
 	<input type="hidden" name="submitted" value="yes">
 	<div class="control-group">
 		<label for="name" class="control-label">Name</label>
-		<div class="controls"><input type="text" name="name" id="name" class="input-xlarge <?=$disabled_field?>" <?=$disabled_field?> value="<?=$invitation['name']?>"></div>
+		<div class="controls"><input type="text" name="name" id="name" class="span8 <?=$disabled_field?>" <?=$disabled_field?> value="<?=$invitation['name']?>"></div>
 	</div>
 	<div class="control-group">
 		<label for="name" class="control-label">Long Description<br />
 			(Remember - this can help your invitation appear in Google search results so it is worth extra effort.)</label>
-		<div class="controls"><textarea name="long_description" id="long_description" cols="30" rows="10" class="input-xlarge <?=$disabled_field?>" <?=$disabled_field?>><?=$invitation['long_description']?></textarea></div>
+		<div class="controls"><textarea name="long_description" id="long_description" cols="30" rows="10" class="span8 <?=$disabled_field?>" <?=$disabled_field?>><?=$invitation['long_description']?></textarea></div>
 	</div>
 	<div class="control-group">
 		<label for="invitation_html" class="control-label">HTML</label>
-		<div class="controls"><textarea name="invitation_html" id="invitation_html" cols="30" rows="10" class="input-xlarge <?=$disabled_field?>" <?=$disabled_field?>><?=$invitation['invitation_html']?></textarea></div>
+		<div class="controls"><textarea name="invitation_html" id="invitation_html" cols="30" rows="10" class="span8 <?=$disabled_field?>" <?=$disabled_field?>><?=$invitation['invitation_html']?></textarea></div>
 		
 	</div>
 
@@ -61,4 +63,5 @@ if($edit_disabled == true){
 			</div>
 		</div>
 	</div>
+</div>
 </div>

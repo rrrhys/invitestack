@@ -254,6 +254,7 @@ HEREDOC;
 			$invitation = array();
 			$invitation['name'] = $this->input->post('name');
 			$invitation['invitation_html'] = $this->input->post('invitation_html');
+			$invitation['long_description'] = $this->input->post('long_description');
 			$invitation['fields']= array();
 			foreach($_POST as $k=>$v){
 				if(substr($k, 0,12) == "input_merge_"){

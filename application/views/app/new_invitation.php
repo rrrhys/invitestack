@@ -38,9 +38,9 @@
 		<label for="invitation_html" class="control-label">HTML</label>
 		<div class="controls">
 
-			<textarea name="invitation_html" id="invitation_html" cols="30" rows="10" class="input-xlarge">
+			<textarea name="invitation_html" id="invitation_html" cols="50" rows="30" class="span8">
 <!-- set background colour only -->
-	<div style="background-color: #fff;width=100%;height=100%;min-height:100%;">
+	<div style="background-color: #fff;">
 	<!-- Place any google web font @import commands inside the style tag. -->
 	<style>
 	</style>

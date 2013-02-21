@@ -17,21 +17,17 @@ tr.Unfinished > td {
 	background-color: #000;
 	border-radius: 3px;
 }
-.browse_invitation_shell {
-	float: left;
-	padding: 20px;
-}
 .invitation {
 	overflow: hidden;
 	position: relative;
 }
 .invitation.landscape {
-	width: 3in;
-	height: 2in;
+	width: 1800px;
+	height: 1200px;
 }
 .invitation.portrait {
-	width: 2in;
-	height: 3in;
+	width: 1200px;
+	height: 1800px;
 }
 /* Landing Page */
 
@@ -93,35 +89,34 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7280a0', end
 	text-shadow: 0px 2px 3px rgba(0,0,0,0.4);
 }
 /* End Landing Page */
-
-.browse_invitation_shell > .invitation_thumb_shell {
-	height:330px;
-	width: 330px;
+.browse_invitation_shell {
+	position: relative;
 	background-color: #eee;
 	border: 1px solid #ccc;
-	position: relative;
 	border-radius: 5px;
-	cursor: pointer;
+	height:330px;
+	width: 330px;
+	margin: 10px;
+		float: left;
+}
+.invitation_thumb_shell > img {
+	max-height: 300px;
+	max-width: 300px;
+}
+.invitation_thumb_shell > .portrait {
+	left: 65px;
+	position: relative;
 }
 
+.invitation_thumb_shell > .landscape {
+	left: 15px;
+	position: relative;
+}
 /* Invitation browse specific */
-.browse_invitation_shell > .portrait {
-	margin-left: -1in;
-	margin-top: -1.5in;
-	left: 50%;
-	top:50%;
-}
 
-.browse_invitation_shell > .landscape {
-	margin-left: -1.5in;
-	margin-top: -1in;
-	left: 50%;
-	top: 50%;
-
-}
 .browse_invitation_shell > .invitation_name {
 	position: absolute;
-	bottom: 0px;
+	bottom: 0;
 	width: 100%;
 	text-align: center;
 	background-color: #fff;
@@ -144,19 +139,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7280a0', end
 
 /*END View invitation specific */
 .mid-size{
-	zoom: 1.3;
-	line-height:100%;
-}
-.mid-full_size {
-	zoom: 2.0;
+	zoom: 0.3;
 	line-height:100%;
 }
 .print{
-	zoom: 8.34; /*multiply by 2 because we show half size, then by 4.17 to 72dpi to 300 dpi*/
+	zoom: 1; /*multiply by 2 because we show half size, then by 4.17 to 72dpi to 300 dpi*/
 	line-height:100%;
 }
 .thumb {
-	zoom: 0.6;
+	zoom: 0.15;
 }
 
 /*.horizontal{
