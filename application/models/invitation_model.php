@@ -141,6 +141,8 @@ class Invitation_model extends CI_Model
       if($q){
         $this->db->where('invitation_id',$q['id']);
         $q['fields'] = $this->db->get('invitation_fields')->result_array();
+        $q['image_url_thumb'] = $this->get_generic_image_url($q['id'],"thumb");
+        $q['image_url_print'] = $this->get_generic_image_url($q['id'],"print");
       }
     	return $q;
     }
