@@ -1,2 +1,5 @@
 {"ts":1361419502027,"silentsave":true,"restoring":false,"patch":[[{"diffs":[[1,"*/config/development\n*/logs/log-*.php\n*/logs/!index.html\n*/cache/*\n*/cache/!index.html\nuser_guide/*\n*/config/database_password.php\ninvitations/*\n*/config/instance_config.php"]],"start1":0,"start2":0,"length1":0,"length2":173}]],"length":173}
 {"contributors":[],"silentsave":false,"ts":1361419506161,"patch":[[{"diffs":[[0,"e_config.php"],[1,"\n*.pem"]],"start1":161,"start2":161,"length1":12,"length2":18}]],"length":179,"saved":false}
+{"contributors":[],"silentsave":true,"ts":1361438651244,"patch":[[{"diffs":[[0,"hp\n*.pem"],[1,"\n*.p"]],"start1":171,"start2":171,"length1":8,"length2":12}]],"length":183,"saved":false}
+{"ts":1361438653034,"patch":[[{"diffs":[[0,"hp\n*.pem\n*.p"],[1,"em.c9s"]],"start1":171,"start2":171,"length1":12,"length2":18}]],"length":189,"saved":false}
+{"ts":1361438654486,"patch":[[{"diffs":[[0,".pem.c9s"],[1,"ave"]],"start1":181,"start2":181,"length1":8,"length2":11}]],"length":192,"saved":false}

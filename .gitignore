@@ -8,3 +8,4 @@ user_guide/*
 invitations/*
 */config/instance_config.php
 *.pem
+*.pem.c9save
