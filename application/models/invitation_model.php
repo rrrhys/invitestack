@@ -40,12 +40,12 @@ class Invitation_model extends CI_Model
         return false;
       }
     }
-    public function get_generic_image_url($invitation_id,$size="thumb"){
+    public function get_generic_image_url($invitation_id,$size="thumb",$force_remake = false){
       log_message('debug', '(get_generic_image_url)asked to make generic image for id ' . $invitation_id . $size);
-      $web_path = $this->make_generic_image_if_not_exists($invitation_id,"John",date("dMY"),$size);
+      $web_path = $this->make_generic_image_if_not_exists($invitation_id,"John",date("dMY"),$size,$force_remake);
       return $web_path;
     }
-    public function make_generic_image_if_not_exists($invitation_id,$invitation_name,$unique_hash="1",$size="thumb"){
+    public function make_generic_image_if_not_exists($invitation_id,$invitation_name,$unique_hash="1",$size="thumb",$force_remake = false){
       log_message('debug', '(make_generic_image_if_not_exists) for id ' . $invitation_id);
       $image_url ="http://".$_SERVER['HTTP_HOST'] . '/app/generic_invitation/' . $invitation_id . '/' . $invitation_name . '/' . $unique_hash . '/html/' . $size;
       $filename_to_make = "Generic_".$invitation_id.'_'.$invitation_name.'_'.$unique_hash . $size.'.jpg';
@@ -53,7 +53,7 @@ class Invitation_model extends CI_Model
       //echo $exec_string;
       $web_path = "/invitations/".$filename_to_make;
 
-      if(!file_exists($_SERVER['DOCUMENT_ROOT'].'/invitations/'.$filename_to_make)){
+      if(!file_exists($_SERVER['DOCUMENT_ROOT'].'/invitations/'.$filename_to_make) || $force_remake){
          log_message('debug', '(make_generic_image_if_not_exists) calling ' . $exec_string);
       exec($exec_string,$result);
       //echo json_encode($result);
@@ -140,15 +140,15 @@ class Invitation_model extends CI_Model
       $q = $this->db->get('invitations')->result_array();
       return count($q) == 1;
     }
-    public function get_invitation($invitation_id,$skip_url = true){
+    public function get_invitation($invitation_id,$skip_url = true,$force_remake = false){
       $this->db->where('id',$invitation_id);
     	$q = $this->db->get('invitations')->row_array();
       if($q){
         $this->db->where('invitation_id',$q['id']);
         $q['fields'] = $this->db->get('invitation_fields')->result_array();
         if(!$skip_url){
-          $q['image_url_thumb'] = $this->get_generic_image_url($q['id'],"thumb");
-          $q['image_url_print'] = $this->get_generic_image_url($q['id'],"print");
+          $q['image_url_thumb'] = $this->get_generic_image_url($q['id'],"thumb",$force_remake);
+          $q['image_url_print'] = $this->get_generic_image_url($q['id'],"print",$force_remake);
         }
       }
     	return $q;
@@ -244,6 +244,9 @@ class Invitation_model extends CI_Model
           $this->db->insert('invitation_fields',$insert);
         }
       }
+      //invitation was updated - delete the cached images.
+      $inv = $this->get_invitation($invitation_id,false,true);
+
       return true;
     }
    	public function add_invitation($owner_id,$invitation){

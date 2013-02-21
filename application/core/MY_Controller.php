@@ -48,7 +48,7 @@ class MY_Controller extends CI_Controller {
 	 	parent::__construct();
 	 	$this->load->library('session');
 	 	$this->load->library('migration');
-	 	$this->migration->version(11);
+	 	$this->migration->version(12);
 	 	if($this->migration->error_string()){
 	 		echo $this->migration->error_string();
 	 		die();
