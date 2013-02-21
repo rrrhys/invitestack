@@ -11,8 +11,7 @@
 	<div class="span10">
 	<div class="row-fluid">
 			<div class="span6">
-		    <img src="<?=$invitation['image_url_print']?>">
-				<div class="invitation mid-size <?=$invitation['orientation']?>" id="invitation_preview_merged"><?=$invitation['invitation_html']?></div>
+		    <img src="<?=$invitation['image_url_print']?>" class="<?=$invitation['orientation']?> invitation-build-preview">
 			</div>
 	<div class="span4">
 		<h3>About:</h3>
