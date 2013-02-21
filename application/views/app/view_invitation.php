@@ -1,8 +1,8 @@
 <div class="span8 offset2">
 <script type="text/javascript">
 	$(function(){
-		app.merge_preview();
-		app.merge_preview_template();
+	//	app.merge_preview();
+	//	app.merge_preview_template();
 	});
 </script>
 <input type="hidden" name="base_id" id="base_id" value="<?=$invitation['id']?>" />
@@ -11,7 +11,7 @@
 	<div class="span10">
 	<div class="row-fluid">
 			<div class="span6">
-		
+		    <img src="<?=$invitation['image_url_print']?>">
 				<div class="invitation mid-size <?=$invitation['orientation']?>" id="invitation_preview_merged"><?=$invitation['invitation_html']?></div>
 			</div>
 	<div class="span4">
