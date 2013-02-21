@@ -35,7 +35,7 @@ class App extends MY_Controller {
 		}
 	}
 	public function landing_page(){
-		//echo "Landing Page";
+		echo "Landing Page";
 		$page_data = $this->page_data_base();
 			$page_data['page_title'] = "";
 			$page_data['page_heading'] = "";
