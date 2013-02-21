@@ -41,10 +41,12 @@ class Invitation_model extends CI_Model
       }
     }
     public function get_generic_image_url($invitation_id,$size="thumb"){
+      log_message('debug', '(get_generic_image_url)asked to make generic image for id ' . $invitation_id . $size);
       $web_path = $this->make_generic_image_if_not_exists($invitation_id,"John",date("dMY"),$size);
       return $web_path;
     }
     public function make_generic_image_if_not_exists($invitation_id,$invitation_name,$unique_hash="1",$size="thumb"){
+      log_message('debug', '(make_generic_image_if_not_exists) for id ' . $invitation_id);
       $image_url ="http://".$_SERVER['HTTP_HOST'] . '/app/generic_invitation/' . $invitation_id . '/' . $invitation_name . '/' . $unique_hash . '/html/' . $size;
       $filename_to_make = "Generic_".$invitation_id.'_'.$invitation_name.'_'.$unique_hash . $size.'.jpg';
       $exec_string = $this->config->config['phantomjs_path'] .'/phantomjs '.$_SERVER['DOCUMENT_ROOT'] . '/test.js '.$image_url . ' "#invitation_preview_merged" "'.$_SERVER['DOCUMENT_ROOT'].'/invitations/'.$filename_to_make.'" 2>&1';
@@ -52,6 +54,7 @@ class Invitation_model extends CI_Model
       $web_path = "/invitations/".$filename_to_make;
 
       if(!file_exists($_SERVER['DOCUMENT_ROOT'].'/invitations/'.$filename_to_make)){
+         log_message('debug', '(make_generic_image_if_not_exists) calling ' . $exec_string);
       exec($exec_string,$result);
       //echo json_encode($result);
       $result = implode("\r\n", $result);
@@ -85,6 +88,7 @@ class Invitation_model extends CI_Model
       return $web_path;
     }
     public function list_invitations_merged($owner_id=false){
+      log_message('debug', 'list invitations merged called');
       if($owner_id){
        $this->db->where('owner_id',$owner_id);
       }
@@ -98,6 +102,7 @@ class Invitation_model extends CI_Model
          $inv['invitation_html'] = str_replace($find_string, $f['value'], $inv['invitation_html']);
 
         }
+        log_message('debug', '(list_invitations_merged) need generic image for id ' . $inv['id']);
         $inv['image_url_thumb'] = $this->get_generic_image_url($inv['id'],"thumb");
         $inv['image_url_print'] = $this->get_generic_image_url($inv['id'],"print");
       }
@@ -135,14 +140,16 @@ class Invitation_model extends CI_Model
       $q = $this->db->get('invitations')->result_array();
       return count($q) == 1;
     }
-    public function get_invitation($invitation_id){
+    public function get_invitation($invitation_id,$skip_url = true){
       $this->db->where('id',$invitation_id);
     	$q = $this->db->get('invitations')->row_array();
       if($q){
         $this->db->where('invitation_id',$q['id']);
         $q['fields'] = $this->db->get('invitation_fields')->result_array();
-        $q['image_url_thumb'] = $this->get_generic_image_url($q['id'],"thumb");
-        $q['image_url_print'] = $this->get_generic_image_url($q['id'],"print");
+        if(!$skip_url){
+          $q['image_url_thumb'] = $this->get_generic_image_url($q['id'],"thumb");
+          $q['image_url_print'] = $this->get_generic_image_url($q['id'],"print");
+        }
       }
     	return $q;
     }

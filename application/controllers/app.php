@@ -35,7 +35,7 @@ class App extends MY_Controller {
 		}
 	}
 	public function landing_page(){
-		echo "Landing Page";
+		//echo "Landing Page";
 		$page_data = $this->page_data_base();
 			$page_data['page_title'] = "";
 			$page_data['page_heading'] = "";
@@ -142,7 +142,7 @@ HEREDOC;
 				$page_data['edit_disabled'] = false;
 			}
 			
-			$page_data['invitation'] = $this->invitations->get_invitation($invitation_id);
+			$page_data['invitation'] = $this->invitations->get_invitation($invitation_id,false);
 			$page_data['page_title'] = "View invitation: " . $page_data['invitation']['name'];
 			$page_data['page_heading'] = "View Invitation: " . $page_data['invitation']['name'];
 			if(!$page_data['invitation']){
@@ -174,7 +174,7 @@ HEREDOC;
 			$page_data['page_title'] = "Generic invitation";
 			$page_data['page_heading'] = "Generic Invitation";
 			$page_data['size'] = $size;
-		$page_data['invitation'] = $this->invitations->get_invitation($generic_id);
+		$page_data['invitation'] = $this->invitations->get_invitation($generic_id,$format=="html");
 		if(!$page_data['invitation']){
 			$this->_invalid_page();
 		}
